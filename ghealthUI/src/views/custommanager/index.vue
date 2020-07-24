@@ -8,10 +8,6 @@
           <div class="box-body">
             <div id="user_table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
               <HeadBar :options="options" v-on:getparentpageList="getHeaderInfo" v-on:btnAddCustomer="btnAddCustomer"/>
-              <div class="btn-group">
-                <button class="btn btn-default" @click="openAdd()">{{$t("buttons.add")}}</button>
-                <button class="btn btn-default" @click="openEdit()">{{$t("buttons.edit")}}</button>
-              </div>
               <Datatable ref='datatable' :items="customers" :columns="columns" :totalCount="totalCount" v-on:getItem="getDataTableItem"/>
               <Pagination :totalpage="totalpage" :curPage="currentPage" :totalCount="totalCount" :pagesize="currentpageList" v-on:getPage="getCurrentPage" />
             </div>
