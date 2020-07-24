@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TRContactsEPCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="contacts_id" property="contactsId" jdbcType="BIGINT" />
+    <result column="epcustomer_id" property="epcustomerId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, contacts_id, epcustomer_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_r_contacts_epcustomer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_r_contacts_epcustomer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer" >
+    insert into t_r_contacts_epcustomer (id, contacts_id, epcustomer_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{contactsId,jdbcType=BIGINT}, #{epcustomerId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer" >
+    insert into t_r_contacts_epcustomer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="contactsId != null" >
+        contacts_id,
+      </if>
+      <if test="epcustomerId != null" >
+        epcustomer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="contactsId != null" >
+        #{contactsId,jdbcType=BIGINT},
+      </if>
+      <if test="epcustomerId != null" >
+        #{epcustomerId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer" >
+    update t_r_contacts_epcustomer
+    <set >
+      <if test="contactsId != null" >
+        contacts_id = #{contactsId,jdbcType=BIGINT},
+      </if>
+      <if test="epcustomerId != null" >
+        epcustomer_id = #{epcustomerId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer" >
+    update t_r_contacts_epcustomer
+    set contacts_id = #{contactsId,jdbcType=BIGINT},
+      epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

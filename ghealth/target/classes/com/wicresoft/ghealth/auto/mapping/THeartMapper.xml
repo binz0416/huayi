@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.THeartMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.THeart" >
+    <id column="heart_id" property="heartId" jdbcType="BIGINT" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_checkin" property="customerCheckin" jdbcType="TIMESTAMP" />
+    <result column="customer_mobile" property="customerMobile" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickname" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="VARCHAR" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="respiratory" property="respiratory" jdbcType="INTEGER" />
+    <result column="beatNum" property="beatnum" jdbcType="INTEGER" />
+    <result column="maxHeart" property="maxheart" jdbcType="INTEGER" />
+    <result column="avgHeart" property="avgheart" jdbcType="INTEGER" />
+    <result column="minHeart" property="minheart" jdbcType="INTEGER" />
+    <result column="braNum" property="branum" jdbcType="INTEGER" />
+    <result column="tachNum" property="tachnum" jdbcType="INTEGER" />
+    <result column="apbNum" property="apbnum" jdbcType="INTEGER" />
+    <result column="vpcNum" property="vpcnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    heart_id, uuid, customer_id, customer_checkin, customer_mobile, nickName, startTime, 
+    endTime, sn, url, respiratory, beatNum, maxHeart, avgHeart, minHeart, braNum, tachNum, 
+    apbNum, vpcNum
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_heart
+    where heart_id = #{heartId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_heart
+    where heart_id = #{heartId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.THeart" >
+    insert into t_heart (heart_id, uuid, customer_id, 
+      customer_checkin, customer_mobile, nickName, 
+      startTime, endTime, sn, 
+      url, respiratory, beatNum, 
+      maxHeart, avgHeart, minHeart, 
+      braNum, tachNum, apbNum, 
+      vpcNum)
+    values (#{heartId,jdbcType=BIGINT}, #{uuid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{customerCheckin,jdbcType=TIMESTAMP}, #{customerMobile,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{starttime,jdbcType=VARCHAR}, #{endtime,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{respiratory,jdbcType=INTEGER}, #{beatnum,jdbcType=INTEGER}, 
+      #{maxheart,jdbcType=INTEGER}, #{avgheart,jdbcType=INTEGER}, #{minheart,jdbcType=INTEGER}, 
+      #{branum,jdbcType=INTEGER}, #{tachnum,jdbcType=INTEGER}, #{apbnum,jdbcType=INTEGER}, 
+      #{vpcnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.THeart" >
+    insert into t_heart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="heartId != null" >
+        heart_id,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin,
+      </if>
+      <if test="customerMobile != null" >
+        customer_mobile,
+      </if>
+      <if test="nickname != null" >
+        nickName,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="respiratory != null" >
+        respiratory,
+      </if>
+      <if test="beatnum != null" >
+        beatNum,
+      </if>
+      <if test="maxheart != null" >
+        maxHeart,
+      </if>
+      <if test="avgheart != null" >
+        avgHeart,
+      </if>
+      <if test="minheart != null" >
+        minHeart,
+      </if>
+      <if test="branum != null" >
+        braNum,
+      </if>
+      <if test="tachnum != null" >
+        tachNum,
+      </if>
+      <if test="apbnum != null" >
+        apbNum,
+      </if>
+      <if test="vpcnum != null" >
+        vpcNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="heartId != null" >
+        #{heartId,jdbcType=BIGINT},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerMobile != null" >
+        #{customerMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="respiratory != null" >
+        #{respiratory,jdbcType=INTEGER},
+      </if>
+      <if test="beatnum != null" >
+        #{beatnum,jdbcType=INTEGER},
+      </if>
+      <if test="maxheart != null" >
+        #{maxheart,jdbcType=INTEGER},
+      </if>
+      <if test="avgheart != null" >
+        #{avgheart,jdbcType=INTEGER},
+      </if>
+      <if test="minheart != null" >
+        #{minheart,jdbcType=INTEGER},
+      </if>
+      <if test="branum != null" >
+        #{branum,jdbcType=INTEGER},
+      </if>
+      <if test="tachnum != null" >
+        #{tachnum,jdbcType=INTEGER},
+      </if>
+      <if test="apbnum != null" >
+        #{apbnum,jdbcType=INTEGER},
+      </if>
+      <if test="vpcnum != null" >
+        #{vpcnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.THeart" >
+    update t_heart
+    <set >
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerMobile != null" >
+        customer_mobile = #{customerMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="respiratory != null" >
+        respiratory = #{respiratory,jdbcType=INTEGER},
+      </if>
+      <if test="beatnum != null" >
+        beatNum = #{beatnum,jdbcType=INTEGER},
+      </if>
+      <if test="maxheart != null" >
+        maxHeart = #{maxheart,jdbcType=INTEGER},
+      </if>
+      <if test="avgheart != null" >
+        avgHeart = #{avgheart,jdbcType=INTEGER},
+      </if>
+      <if test="minheart != null" >
+        minHeart = #{minheart,jdbcType=INTEGER},
+      </if>
+      <if test="branum != null" >
+        braNum = #{branum,jdbcType=INTEGER},
+      </if>
+      <if test="tachnum != null" >
+        tachNum = #{tachnum,jdbcType=INTEGER},
+      </if>
+      <if test="apbnum != null" >
+        apbNum = #{apbnum,jdbcType=INTEGER},
+      </if>
+      <if test="vpcnum != null" >
+        vpcNum = #{vpcnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where heart_id = #{heartId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.THeart" >
+    update t_heart
+    set uuid = #{uuid,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      customer_mobile = #{customerMobile,jdbcType=VARCHAR},
+      nickName = #{nickname,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=VARCHAR},
+      endTime = #{endtime,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      respiratory = #{respiratory,jdbcType=INTEGER},
+      beatNum = #{beatnum,jdbcType=INTEGER},
+      maxHeart = #{maxheart,jdbcType=INTEGER},
+      avgHeart = #{avgheart,jdbcType=INTEGER},
+      minHeart = #{minheart,jdbcType=INTEGER},
+      braNum = #{branum,jdbcType=INTEGER},
+      tachNum = #{tachnum,jdbcType=INTEGER},
+      apbNum = #{apbnum,jdbcType=INTEGER},
+      vpcNum = #{vpcnum,jdbcType=INTEGER}
+    where heart_id = #{heartId,jdbcType=BIGINT}
+  </update>
+</mapper>

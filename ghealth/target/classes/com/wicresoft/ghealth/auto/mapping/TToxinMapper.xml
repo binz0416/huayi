@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TToxinMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TToxin" >
+    <id column="toxin_id" property="toxinId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TToxinWithBLOBs" extends="BaseResultMap" >
+    <result column="expert_opinion" property="expertOpinion" jdbcType="LONGVARCHAR" />
+    <result column="report_area" property="reportArea" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    toxin_id, customer_id, inspection_time, path
+  </sql>
+  <sql id="Blob_Column_List" >
+    expert_opinion, report_area
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_toxin
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_toxin
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TToxinWithBLOBs" >
+    insert into t_toxin (toxin_id, customer_id, inspection_time, 
+      path, expert_opinion, report_area
+      )
+    values (#{toxinId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{inspectionTime,jdbcType=TIMESTAMP}, 
+      #{path,jdbcType=VARCHAR}, #{expertOpinion,jdbcType=LONGVARCHAR}, #{reportArea,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TToxinWithBLOBs" >
+    insert into t_toxin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="toxinId != null" >
+        toxin_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="expertOpinion != null" >
+        expert_opinion,
+      </if>
+      <if test="reportArea != null" >
+        report_area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="toxinId != null" >
+        #{toxinId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="expertOpinion != null" >
+        #{expertOpinion,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportArea != null" >
+        #{reportArea,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TToxinWithBLOBs" >
+    update t_toxin
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="expertOpinion != null" >
+        expert_opinion = #{expertOpinion,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportArea != null" >
+        report_area = #{reportArea,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TToxinWithBLOBs" >
+    update t_toxin
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      path = #{path,jdbcType=VARCHAR},
+      expert_opinion = #{expertOpinion,jdbcType=LONGVARCHAR},
+      report_area = #{reportArea,jdbcType=LONGVARCHAR}
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TToxin" >
+    update t_toxin
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      path = #{path,jdbcType=VARCHAR}
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TArchivesMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    <id column="archives_id" property="archivesId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="archives_create_time" property="archivesCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TArchives" extends="BaseResultMap" >
+    <result column="advise" property="advise" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    archives_id, customer_id, archives_create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    advise
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_archives
+    where archives_id = #{archivesId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_archives
+    where archives_id = #{archivesId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    insert into t_archives (archives_id, customer_id, archives_create_time, 
+      advise)
+    values (#{archivesId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{archivesCreateTime,jdbcType=TIMESTAMP}, 
+      #{advise,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    insert into t_archives
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="archivesId != null" >
+        archives_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="archivesCreateTime != null" >
+        archives_create_time,
+      </if>
+      <if test="advise != null" >
+        advise,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="archivesId != null" >
+        #{archivesId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="archivesCreateTime != null" >
+        #{archivesCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advise != null" >
+        #{advise,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    update t_archives
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="archivesCreateTime != null" >
+        archives_create_time = #{archivesCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="advise != null" >
+        advise = #{advise,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where archives_id = #{archivesId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    update t_archives
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      archives_create_time = #{archivesCreateTime,jdbcType=TIMESTAMP},
+      advise = #{advise,jdbcType=LONGVARCHAR}
+    where archives_id = #{archivesId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TArchives" >
+    update t_archives
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      archives_create_time = #{archivesCreateTime,jdbcType=TIMESTAMP}
+    where archives_id = #{archivesId,jdbcType=VARCHAR}
+  </update>
+</mapper>

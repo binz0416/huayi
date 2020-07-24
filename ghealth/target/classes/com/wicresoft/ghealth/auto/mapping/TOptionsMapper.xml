@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TOptionsMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TOptions" >
+    <id column="options_id" property="optionsId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+    <result column="key_value" property="keyValue" jdbcType="VARCHAR" />
+    <result column="show_order" property="showOrder" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    options_id, type, type_name, key_word, key_value, show_order, parentid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_options
+    where options_id = #{optionsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_options
+    where options_id = #{optionsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TOptions" >
+    insert into t_options (options_id, type, type_name, 
+      key_word, key_value, show_order, 
+      parentid)
+    values (#{optionsId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{keyWord,jdbcType=VARCHAR}, #{keyValue,jdbcType=VARCHAR}, #{showOrder,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TOptions" >
+    insert into t_options
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="optionsId != null" >
+        options_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="keyWord != null" >
+        key_word,
+      </if>
+      <if test="keyValue != null" >
+        key_value,
+      </if>
+      <if test="showOrder != null" >
+        show_order,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="optionsId != null" >
+        #{optionsId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="keyWord != null" >
+        #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="showOrder != null" >
+        #{showOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TOptions" >
+    update t_options
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="keyWord != null" >
+        key_word = #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="keyValue != null" >
+        key_value = #{keyValue,jdbcType=VARCHAR},
+      </if>
+      <if test="showOrder != null" >
+        show_order = #{showOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where options_id = #{optionsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TOptions" >
+    update t_options
+    set type = #{type,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      key_word = #{keyWord,jdbcType=VARCHAR},
+      key_value = #{keyValue,jdbcType=VARCHAR},
+      show_order = #{showOrder,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=VARCHAR}
+    where options_id = #{optionsId,jdbcType=BIGINT}
+  </update>
+</mapper>

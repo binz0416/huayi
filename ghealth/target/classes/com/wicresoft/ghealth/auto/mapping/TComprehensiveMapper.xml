@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TComprehensiveMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    <id column="comprehensive_id" property="comprehensiveId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TComprehensive" extends="BaseResultMap" >
+    <result column="report_area" property="reportArea" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comprehensive_id, customer_id, inspection_time, path
+  </sql>
+  <sql id="Blob_Column_List" >
+    report_area
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_comprehensive
+    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_comprehensive
+    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    insert into t_comprehensive (comprehensive_id, customer_id, inspection_time, 
+      path, report_area)
+    values (#{comprehensiveId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{inspectionTime,jdbcType=TIMESTAMP}, 
+      #{path,jdbcType=VARCHAR}, #{reportArea,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    insert into t_comprehensive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="comprehensiveId != null" >
+        comprehensive_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="reportArea != null" >
+        report_area,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="comprehensiveId != null" >
+        #{comprehensiveId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="reportArea != null" >
+        #{reportArea,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    update t_comprehensive
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="reportArea != null" >
+        report_area = #{reportArea,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    update t_comprehensive
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      path = #{path,jdbcType=VARCHAR},
+      report_area = #{reportArea,jdbcType=LONGVARCHAR}
+    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TComprehensive" >
+    update t_comprehensive
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      path = #{path,jdbcType=VARCHAR}
+    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.epcustom.dao.EPContactsDao">
+	<select id="getEPContactsByCustom" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+		    co.contacts_id AS contactsId
+		    , co.`name`
+		    , co.creator_userid AS creatorUserid
+		    , tu2.username AS creatorUserName
+		    , cu.epcustomer_id AS epcustomerId
+		    , cu.`name` AS epcustomerName
+		    , tr.id as relationId
+		    , co.post AS post 
+		    , co.department AS department
+		    , co.sex AS sex   
+		    , IFNULL(CASE WHEN co.sex = '0' THEN '男' ELSE '女' END,'') AS sexDsp
+		    , co.saltname
+		    <!-- ,insert(co.telephone, 4, 4, '****') AS telephone --> 
+		    , co.telephone AS telephone
+		    , co.email
+		    , co.qq_no AS qqNo
+		    , co.address
+		    , co.zip_code AS zipCode
+		    , co.description
+		    , co.create_time AS createTime    
+		    , FROM_UNIXTIME(co.create_time, '%Y-%m-%d %H:%i:%s') AS createTimeStr
+		    , co.update_time AS updateTime 
+		    , FROM_UNIXTIME(co.update_time, '%Y-%m-%d %H:%i:%s') AS updateTimeStr
+		FROM t_contacts co
+		LEFT JOIN t_r_contacts_epcustomer tr
+			ON tr.contacts_id = co.contacts_id
+		LEFT JOIN t_epcustomer cu
+			ON cu.epcustomer_id = tr.epcustomer_id
+		LEFT JOIN t_userinfo tu
+			ON tu.userid = cu.owner_userid
+		LEFT JOIN t_userinfo tu2
+			ON tu2.userid = co.creator_userid
+		WHERE co.is_deleted = '0'
+		<if test="ownerUserid != null and ownerUserid != ''">
+		   AND tu.userid = #{ownerUserid,jdbcType=BIGINT}
+		</if>
+		<if test="epcustomerId != null and epcustomerId != ''">
+		   AND cu.epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+		</if>
+		 ORDER BY co.contacts_id ASC		
+	</select>
+	
+	<select id="countEPContacts" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT COUNT(1)
+		FROM(
+			SELECT co.contacts_id
+			  FROM t_contacts co
+			LEFT JOIN t_r_contacts_epcustomer tr
+			ON tr.contacts_id = co.contacts_id
+			LEFT JOIN t_epcustomer cu
+			ON cu.epcustomer_id = tr.epcustomer_id
+			WHERE co.is_deleted = '0'
+			<if test="ownerUserid != null and ownerUserid != '' ">
+			   AND cu.owner_userid = #{ownerUserid,jdbcType=BIGINT}
+			</if>
+			<if test="name != null and name != ''">
+			   AND co.name like '%${name}%'
+			</if>
+			) tmp
+	</select>
+
+	<select id="getEPContacts" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+		    co.contacts_id AS contactsId
+		    , co.`name`
+		    , co.creator_userid AS creatorUserid
+		    , tu2.username AS creatorUserName
+		    , cu.epcustomer_id AS epcustomerId
+		    , cu.`name` AS epcustomerName
+		    , tr.id as relationId
+		    , co.post AS post 
+		    , co.department AS department
+		    , co.sex AS sex   
+		    , IFNULL(CASE WHEN co.sex = '0' THEN '男' ELSE '女' END,'') AS sexDsp
+		    , co.saltname
+		    <!-- , insert(co.telephone, 4, 4, '****') AS telephone -->
+		    , co.telephone AS telephone
+		    , co.email
+		    , co.qq_no AS qqNo
+		    , co.address
+		    , co.zip_code AS zipCode
+		    , co.description
+		    , co.create_time AS createTime    
+		    , FROM_UNIXTIME(co.create_time, '%Y-%m-%d %H:%i:%s') AS createTimeStr
+		    , co.update_time AS updateTime 
+		    , FROM_UNIXTIME(co.update_time, '%Y-%m-%d %H:%i:%s') AS updateTimeStr
+		FROM t_contacts co
+		LEFT JOIN t_r_contacts_epcustomer tr
+			ON tr.contacts_id = co.contacts_id
+		LEFT JOIN t_epcustomer cu
+			ON cu.epcustomer_id = tr.epcustomer_id
+		LEFT JOIN t_userinfo tu
+			ON tu.userid = cu.owner_userid
+		LEFT JOIN t_userinfo tu2
+			ON tu2.userid = co.creator_userid
+		WHERE co.is_deleted = '0'
+		<if test="ownerUserid != null and ownerUserid != ''">
+		   AND tu.userid = #{ownerUserid,jdbcType=BIGINT}
+		</if>
+		 <if test="name != null and name != ''">
+		   AND co.name like '%${name}%'
+		</if>
+		ORDER BY cu.epcustomer_id,co.contacts_id ASC	
+		<if test="page != null and pageSize != null">
+		 	LIMIT #{page}, #{pageSize}
+		</if>	
+	</select>
+	
+	<select id="checkHasEPContacts" resultType="java.lang.Integer" parameterType="java.lang.Long">
+		SELECT count(1)
+		  FROM t_contacts
+         WHERE contacts_id = #{contactsId,jdbcType=BIGINT}
+	</select>
+
+	<insert id="insertEPContactsInfo" parameterType="com.wicresoft.ghealth.epcustom.dto.EPContactsDto" useGeneratedKeys="true" keyProperty="contactsId">
+		insert into t_contacts
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contactsId != null">
+				contacts_id,
+			</if>
+			<if test="creatorUserid != null">
+				creator_userid,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="post != null">
+				post,
+			</if>
+			<if test="department != null">
+				department,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="saltname != null">
+				saltname,
+			</if>
+			<if test="telephone != null">
+				telephone,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="qqNo != null">
+				qq_no,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="zipCode != null">
+				zip_code,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isDeleted != null">
+				is_deleted,
+			</if>
+			<if test="deleteUserid != null">
+				delete_userid,
+			</if>
+			<if test="deleteTime != null">
+				delete_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contactsId != null">
+				#{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="creatorUserid != null">
+				#{creatorUserid,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="post != null">
+				#{post,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=INTEGER},
+			</if>
+			<if test="saltname != null">
+				#{saltname,jdbcType=VARCHAR},
+			</if>
+			<if test="telephone != null">
+				#{telephone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="qqNo != null">
+				#{qqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				#{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=INTEGER},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted,jdbcType=INTEGER},
+			</if>
+			<if test="deleteUserid != null">
+				#{deleteUserid,jdbcType=BIGINT},
+			</if>
+			<if test="deleteTime != null">
+				#{deleteTime,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateEPContactsInfo" parameterType="com.wicresoft.ghealth.epcustom.dto.EPContactsDto">
+		update t_contacts
+		<set>
+			<if test="creatorUserid != null">
+				creator_userid = #{creatorUserid,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="post != null">
+				post = #{post,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				department = #{department,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=INTEGER},
+			</if>
+			<if test="saltname != null">
+				saltname = #{saltname,jdbcType=VARCHAR},
+			</if>
+			<if test="telephone != null">
+				telephone = #{telephone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="qqNo != null">
+				qq_no = #{qqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				zip_code = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=INTEGER},
+			</if>
+			<if test="isDeleted != null">
+				is_deleted = #{isDeleted,jdbcType=INTEGER},
+			</if>
+			<if test="deleteUserid != null">
+				delete_userid = #{deleteUserid,jdbcType=BIGINT},
+			</if>
+			<if test="deleteTime != null">
+				delete_time = #{deleteTime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where contacts_id = #{contactsId,jdbcType=BIGINT}
+	</update>
+
+	<insert id="insertEPCustomerContactsInfo" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer">
+		insert into t_r_contacts_epcustomer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="contactsId != null">
+				contacts_id,
+			</if>
+			<if test="epcustomerId != null">
+				epcustomer_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="contactsId != null">
+				#{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="epcustomerId != null">
+				#{epcustomerId,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateEPCustomerContactsInfo" parameterType="com.wicresoft.ghealth.auto.pojo.TRContactsEPCustomer">
+		update t_r_contacts_epcustomer
+		<set>
+			<if test="contactsId != null">
+				contacts_id = #{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="epcustomerId != null">
+				epcustomer_id = #{epcustomerId,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateContactsByCustom" parameterType="com.wicresoft.ghealth.epcustom.dto.EPContactsDto">
+		UPDATE t_contacts co
+		  LEFT JOIN t_r_contacts_epcustomer tr
+		    ON co.contacts_id = tr.contacts_id
+		  LEFT JOIN t_epcustomer cu
+		    ON cu.epcustomer_id = tr.epcustomer_id
+		<set>
+			<if test="updateTime != null">
+				co.update_time = #{updateTime,jdbcType=INTEGER},
+			</if>
+			<if test="isDeleted != null">
+				co.is_deleted = #{isDeleted,jdbcType=INTEGER},
+			</if>
+			<if test="deleteUserid != null">
+				co.delete_userid = #{deleteUserid,jdbcType=BIGINT},
+			</if>
+			<if test="deleteTime != null">
+				co.delete_time = #{deleteTime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where cu.epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</update>
+	
+	<delete id="deleteRelationByContacts" parameterType="java.lang.Long" >
+	    delete from t_r_contacts_epcustomer
+	    where contacts_id = #{contactsId,jdbcType=BIGINT}
+    </delete>
+    
+   	<delete id="deleteRelationByCustomer" parameterType="java.lang.Long" >
+	    delete from t_r_contacts_epcustomer
+	    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+    </delete>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TCustomerCheckinMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TCustomerCheckin" >
+    <id column="connectionid" property="connectionid" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_checkin" property="customerCheckin" jdbcType="TIMESTAMP" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="hotel_roomnum" property="hotelRoomnum" jdbcType="VARCHAR" />
+    <result column="customer_checkout" property="customerCheckout" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    connectionid, customer_id, customer_checkin, organization_id, hotel_roomnum, customer_checkout
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_checkin
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_customer_checkin
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TCustomerCheckin" >
+    insert into t_customer_checkin (connectionid, customer_id, customer_checkin, 
+      organization_id, hotel_roomnum, customer_checkout
+      )
+    values (#{connectionid,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{customerCheckin,jdbcType=TIMESTAMP}, 
+      #{organizationId,jdbcType=VARCHAR}, #{hotelRoomnum,jdbcType=VARCHAR}, #{customerCheckout,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TCustomerCheckin" >
+    insert into t_customer_checkin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        connectionid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin,
+      </if>
+      <if test="organizationId != null" >
+        organization_id,
+      </if>
+      <if test="hotelRoomnum != null" >
+        hotel_roomnum,
+      </if>
+      <if test="customerCheckout != null" >
+        customer_checkout,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        #{connectionid,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="organizationId != null" >
+        #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="hotelRoomnum != null" >
+        #{hotelRoomnum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckout != null" >
+        #{customerCheckout,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TCustomerCheckin" >
+    update t_customer_checkin
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="organizationId != null" >
+        organization_id = #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="hotelRoomnum != null" >
+        hotel_roomnum = #{hotelRoomnum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckout != null" >
+        customer_checkout = #{customerCheckout,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TCustomerCheckin" >
+    update t_customer_checkin
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      organization_id = #{organizationId,jdbcType=VARCHAR},
+      hotel_roomnum = #{hotelRoomnum,jdbcType=VARCHAR},
+      customer_checkout = #{customerCheckout,jdbcType=TIMESTAMP}
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+</mapper>

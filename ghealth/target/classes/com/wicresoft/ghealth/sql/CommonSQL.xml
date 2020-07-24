@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.common.dao.CommonDao">
+	<select id="getUserInfo" resultType="com.wicresoft.ghealth.common.dto.UserInfo"
+		parameterType="java.util.Map">
+		SELECT a.userid
+   			 , a.organization_id as organizationId
+   			 , a.username
+   			 , a.fullname
+   			 , b.groupId
+   			 , a.sex
+   			 , a.email
+   			 , a.tel
+   			 , a.position
+		  FROM t_userinfo a
+		  LEFT JOIN (
+					SELECT tur.user_id
+							 , GROUP_CONCAT(CAST(tur.role_id AS CHAR) separator ',') as groupId
+						FROM t_user_role tur
+					 INNER JOIN t_role tr
+							ON tur.role_id = tr.role_id
+					 GROUP BY tur.user_id
+					) b
+		    ON a.userid = b.user_id
+		 WHERE 1 = 1
+		<if test="userid != null">
+		   AND a.userid = #{userid, jdbcType=VARCHAR}
+		</if>
+		<if test="organization_id != null">
+		   AND a.organization_id = #{organization_id, jdbcType=VARCHAR}
+		</if>
+		<if test="username != null">
+		   AND a.username = #{username, jdbcType=VARCHAR}
+		</if>
+		<if test="password != null">
+		   AND a.password = #{password, jdbcType=VARCHAR}
+		</if>
+		<if test="fullname != null">
+		   AND a.fullname = #{fullname, jdbcType=VARCHAR}
+		</if>
+		<if test="sex != null">
+		   AND a.sex = #{sex, jdbcType=VARCHAR}
+		</if>
+		<if test="email != null">
+		   AND a.email = #{email, jdbcType=VARCHAR}
+		</if>
+		<if test="tel != null">
+		   AND a.tel = #{tel, jdbcType=VARCHAR}
+		</if>
+		<if test="position != null">
+		   AND a.position = #{position, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="actlogId"
+		parameterType="com.wicresoft.ghealth.auto.pojo.TActlog">
+		insert into t_actlog ( url, username,
+		accesstime, stat,
+		info
+		)
+		values ( #{url,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+		#{accesstime,jdbcType=VARCHAR}, #{stat,jdbcType=VARCHAR},
+		#{info,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+
+	<select id="getActions" resultType="java.util.Map">
+		SELECT action_id
+		, action_name
+		FROM t_action
+		WHERE deleted = '0'
+	</select>
+	
+	<select id="getOrganizations" resultType="java.util.Map">
+		SELECT organization_id as id
+		     , organization_name as name
+		  FROM t_organization
+	</select>
+	
+	<select id="getRoles" resultType="java.util.Map">
+		SELECT CAST(role_id AS CHAR) as id
+		     , role_shortname as name
+		  FROM t_role
+		 WHERE deleted = '0'
+		 ORDER BY role_id
+	</select>
+	
+	<select id="countCustomers" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT COUNT(1)
+		FROM(
+			SELECT tc.customer_id
+			  FROM t_customer tc
+			LEFT JOIN t_customer_checkin tcc
+			  ON tcc.customer_id = tc.customer_id
+			WHERE 1 = 1
+			<if test="organizationId != null and organizationId != ''">
+			   AND tcc.organization_id = #{organizationId,jdbcType=VARCHAR}
+			</if>
+			<if test="customerCheckin != null and customerCheckin != '' ">
+			   AND DATE_FORMAT(tcc.customer_checkin,'%Y-%m-%d') = #{customerCheckin,jdbcType=VARCHAR}
+			</if>
+			<if test="customerName != null and customerName != ''">
+			   AND tc.customer_name like '%${customerName}%'
+			</if>
+			GROUP BY tc.customer_id) tmp
+	</select>
+	
+	<resultMap type="com.wicresoft.ghealth.common.dto.CustomerInfo" id="customerResult">
+        <id property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="customerIdcard" column="customer_idcard"/>
+        <result property="customerMobile" column="customer_mobile"/>
+        <result property="customerFaceid" column="customer_faceid"/>
+        <result property="customerBirthday" column="customer_birthday"/>
+        <result property="customerSex" column="customer_sex"/>
+        <result property="customerAge" column="customer_age"/>
+        <result property="customerSexDsp" column="customerSexDsp"/>
+        <collection property="checkinInfos" javaType="ArrayList" ofType="com.wicresoft.ghealth.common.dto.CustomerCheckinInfo" column="customer_id" select="getCustomerCheckinInfos"/>
+    </resultMap>
+    <select id="getCustomerInfos" resultMap="customerResult" parameterType="java.util.Map">
+		SELECT 
+			  tc.customer_id
+			 , tc.customer_name
+			 , insert(tc.customer_idcard, 7, 10, '**********') as customer_idcard
+			 , insert(tc.customer_mobile, 4, 4, '****') as customer_mobile
+			 , tc.customer_faceid
+			 , tc.customer_birthday
+			 , tc.customer_sex
+		     , TIMESTAMPDIFF(YEAR, tc.customer_birthday, CURDATE()) as customer_age
+		     , IFNULL(CASE WHEN tc.customer_sex = '0' THEN '男' ELSE '女' END,'') AS customerSexDsp
+		  FROM t_customer tc
+		  LEFT JOIN t_customer_checkin tcc
+			ON tcc.customer_id = tc.customer_id
+		WHERE 1 = 1
+		<if test="organizationId != null and organizationId != ''">
+		   AND tcc.organization_id = #{organizationId,jdbcType=VARCHAR}
+		</if>
+		<if test="customerCheckin != null and customerCheckin != '' ">
+		   AND DATE_FORMAT(tcc.customer_checkin,'%Y-%m-%d') = #{customerCheckin,jdbcType=VARCHAR}
+		</if>
+		<if test="customerName != null and customerName != ''">
+		   AND tc.customer_name like '%${customerName}%'
+		</if>
+		 GROUP BY tc.customer_id
+		 ORDER BY tc.customer_id ASC
+		<if test="page != null and pageSize != null">
+		 LIMIT #{page}, #{pageSize}
+		</if>		
+	</select>
+    
+    <resultMap type="com.wicresoft.ghealth.common.dto.CustomerCheckinInfo" id="customerCheckinResult">
+        <id property="connectionid" column="connectionid"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerCheckinDsp" column="customerCheckinDsp"/>
+        <result property="customerCheckin" column="customer_checkin"/>
+        <result property="customerCheckoutDsp" column="customerCheckoutDsp"/>
+        <result property="customerCheckout" column="customer_checkout"/>
+        <result property="hotelName" column="hotel_name"/>
+        <result property="hotelRoomnum" column="hotel_roomnum"/>
+    </resultMap>
+	<select id="getCustomerCheckinInfos" resultMap="customerCheckinResult" parameterType="java.lang.String">
+		SELECT *
+		     , DATE_FORMAT(tcc.customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+		     , DATE_FORMAT(tcc.customer_checkout,'%Y-%m-%d') as customerCheckoutDsp
+		  FROM t_customer_checkin tcc
+		 WHERE tcc.customer_id = #{customer_id,jdbcType=VARCHAR}
+		 ORDER BY tcc.customer_id ASC
+		        , tcc.customer_checkin DESC
+	</select>
+	
+	<select id="getArchiveId" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT a.archives_id as archivesId
+		  FROM t_archives a
+		 WHERE a.customer_id = #{customerId}
+	</select>
+	
+	<insert id="insertArchivesDetail" parameterType="com.wicresoft.ghealth.common.dto.ArchivesDetailDto" >
+	    insert into t_archives_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="archivesDetailId != null" >
+	        archives_detail_id,
+	      </if>
+	      <if test="archivesId != null" >
+	        archives_id,
+	      </if>
+	      <if test="inspectionTime != null" >
+	        inspection_time,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="scId != null" >
+	        sc_id,
+	      </if>
+	      <if test="advise != null" >
+	        advise,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="archivesDetailId != null" >
+	        #{archivesDetailId,jdbcType=BIGINT},
+	      </if>
+	      <if test="archivesId != null" >
+	        #{archivesId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="inspectionTime != null" >
+	        #{inspectionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="type != null" >
+	        #{type,jdbcType=INTEGER},
+	      </if>
+	      <if test="scId != null" >
+	        #{scId,jdbcType=BIGINT},
+	      </if>
+	      <if test="advise != null" >
+	        #{advise,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<select id="getCustomerInfo" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.customer_id as customerId
+			 , a.customer_checkin as customerCheckin
+			 , DATE_FORMAT(a.customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+			 , b.customer_name as customerName
+			 , b.customer_idcard as customerIdcard
+			 , b.customer_mobile as customerMobile
+			 , TIMESTAMPDIFF(YEAR, b.customer_birthday, CURDATE()) as customerAge
+			 , IFNULL(CASE WHEN b.customer_sex = '0' THEN '男' ELSE '女' END,'') AS customerSexDsp
+		  FROM t_customer_checkin a
+		LEFT JOIN t_customer b
+		  ON b.customer_id = a.customer_id
+		WHERE a.customer_id= #{customerId,jdbcType=VARCHAR}
+		 AND a.organization_id = #{organizationId,jdbcType=VARCHAR}
+		ORDER BY a.customer_checkin DESC LIMIT 1
+	</select>
+</mapper>

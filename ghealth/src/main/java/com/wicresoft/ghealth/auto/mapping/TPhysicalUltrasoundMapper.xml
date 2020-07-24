@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TPhysicalUltrasoundMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasound" >
+    <id column="ultrasound_id" property="ultrasoundId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="clinical_diagnosis" property="clinicalDiagnosis" jdbcType="VARCHAR" />
+    <result column="checkpoint" property="checkpoint" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs" extends="BaseResultMap" >
+    <result column="ul_description" property="ulDescription" jdbcType="LONGVARCHAR" />
+    <result column="ul_tip" property="ulTip" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ultrasound_id, customer_id, inspection_time, clinical_diagnosis, checkpoint
+  </sql>
+  <sql id="Blob_Column_List" >
+    ul_description, ul_tip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_physical_ultrasound
+    where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_physical_ultrasound
+    where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs" >
+    insert into t_physical_ultrasound (ultrasound_id, customer_id, inspection_time, 
+      clinical_diagnosis, checkpoint, ul_description, 
+      ul_tip)
+    values (#{ultrasoundId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{inspectionTime,jdbcType=TIMESTAMP}, 
+      #{clinicalDiagnosis,jdbcType=VARCHAR}, #{checkpoint,jdbcType=VARCHAR}, #{ulDescription,jdbcType=LONGVARCHAR}, 
+      #{ulTip,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs" >
+    insert into t_physical_ultrasound
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ultrasoundId != null" >
+        ultrasound_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="clinicalDiagnosis != null" >
+        clinical_diagnosis,
+      </if>
+      <if test="checkpoint != null" >
+        checkpoint,
+      </if>
+      <if test="ulDescription != null" >
+        ul_description,
+      </if>
+      <if test="ulTip != null" >
+        ul_tip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ultrasoundId != null" >
+        #{ultrasoundId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clinicalDiagnosis != null" >
+        #{clinicalDiagnosis,jdbcType=VARCHAR},
+      </if>
+      <if test="checkpoint != null" >
+        #{checkpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="ulDescription != null" >
+        #{ulDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ulTip != null" >
+        #{ulTip,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs" >
+    update t_physical_ultrasound
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clinicalDiagnosis != null" >
+        clinical_diagnosis = #{clinicalDiagnosis,jdbcType=VARCHAR},
+      </if>
+      <if test="checkpoint != null" >
+        checkpoint = #{checkpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="ulDescription != null" >
+        ul_description = #{ulDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ulTip != null" >
+        ul_tip = #{ulTip,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs" >
+    update t_physical_ultrasound
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      clinical_diagnosis = #{clinicalDiagnosis,jdbcType=VARCHAR},
+      checkpoint = #{checkpoint,jdbcType=VARCHAR},
+      ul_description = #{ulDescription,jdbcType=LONGVARCHAR},
+      ul_tip = #{ulTip,jdbcType=LONGVARCHAR}
+    where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasound" >
+    update t_physical_ultrasound
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      clinical_diagnosis = #{clinicalDiagnosis,jdbcType=VARCHAR},
+      checkpoint = #{checkpoint,jdbcType=VARCHAR}
+    where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+  </update>
+</mapper>

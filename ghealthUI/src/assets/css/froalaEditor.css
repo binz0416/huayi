@@ -1,0 +1,47 @@
+body {
+  overflow-y: scroll;
+  }
+
+.tdTitle {
+  text-align: center;
+  font-weight: bold;
+  padding: 3px;
+  font-size: 12px;
+  border: 1px solid #3C8DBC;
+}
+
+.tdText {
+  text-align: left;
+  width:40%;
+  padding: 3px 0px 3px 25px;
+  border: 1px solid #3C8DBC;
+}
+.tdValue {
+  text-align: left;
+  padding: 3px 0px 3px 25px;
+  border: 1px solid #3C8DBC;
+}
+.tbTitle {
+  text-align: left;
+  font-weight: bold;
+  padding: 1px 1px 1px 10px;
+  color: white;
+  font-size: 14px;
+  background-color: #3C8DBC;
+}
+
+.tbTitle_Extraordinary {
+  text-align: left;
+  font-weight: bold;
+  padding: 1px 1px 1px 10px;
+  color: white;
+  font-size: 14px;
+  background-color: #CC0000;
+}
+@media print{
+  .noPrint{
+    display: none
+  }
+}
+
+

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.epcustom.dao.EPCustomDao">
+	<select id="getEPCustomerInfos" resultType="com.wicresoft.ghealth.epcustom.dto.EPCustomerDto" parameterType="java.util.Map">
+		SELECT 
+			  tc.epcustomer_id as epcustomerId
+			 , tc.name
+			 , tc.owner_userid as ownerUserid
+			 , tu.username as ownerUserName
+			 , tc.creator_userid as creatorUserid
+			 , tu2.username as creatorUserName
+			 , tc.contacts_id as contactsId
+			 , co.name as contactsName
+			 , tc.industry
+			 , tc.address
+			 , tc.rating
+			 , tc.origin
+			 , tc.zip_code as zipCode
+			 , tc.annual_revenue as annualRevenue
+			 , tc.ownership
+			 , tc.is_locked as isLocked
+			 , tc.create_time as createTime
+			 , FROM_UNIXTIME(tc.create_time, '%Y-%m-%d %H:%i:%s') as createTimeStr
+			 , tc.update_time as updateTime
+			 , FROM_UNIXTIME(tc.update_time, '%Y-%m-%d %H:%i:%s') as updateTimeStr
+			 , (30 - datediff(date_format(now(),'%y-%m-%d'), FROM_UNIXTIME(tc.update_time, '%Y-%m-%d'))) as maturityDate
+			 , td.no_of_employees as noOfEmployees
+			 , td.description
+		  FROM t_epcustomer tc
+		  LEFT JOIN t_userinfo tu
+			ON tu.userid = tc.owner_userid
+		  LEFT JOIN t_userinfo tu2
+			ON tu2.userid = tc.creator_userid
+		  LEFT JOIN t_contacts co
+		    ON co.contacts_id = tc.contacts_id
+		  LEFT JOIN t_epcustomer_data td
+		    ON td.epcustomer_id = tc.epcustomer_id
+		WHERE tc.is_deleted = '0'
+		<if test="ownerUserid != null and ownerUserid != ''">
+		   AND tc.owner_userid = #{ownerUserid,jdbcType=BIGINT}
+		</if>
+		<if test="name != null and name != ''">
+		   AND tc.name like '%${name}%'
+		</if>
+		 ORDER BY tc.epcustomer_id ASC
+		<if test="page != null and pageSize != null">
+		 LIMIT #{page}, #{pageSize}
+		</if>		
+	</select>
+	
+	<select id="countEPCustomers" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT COUNT(1)
+		FROM(
+			SELECT tc.epcustomer_id
+			  FROM t_epcustomer tc
+			WHERE 1 = 1
+			<if test="ownerUserid != null and ownerUserid != '' ">
+			   AND tc.owner_userid = #{ownerUserid,jdbcType=BIGINT}
+			</if>
+			<if test="name != null and name != ''">
+			   AND tc.name like '%${name}%'
+			</if>
+			) tmp
+	</select>
+	
+	<select id="checkHasEPCustomer" resultType="java.lang.Integer" parameterType="java.lang.Long">
+		SELECT count(1)
+		  FROM t_epcustomer
+         WHERE epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</select>
+	
+	<insert id="insertEPCustomerInfo" parameterType="com.wicresoft.ghealth.epcustom.dto.EPCustomerDto" useGeneratedKeys="true" keyProperty="epcustomerId">
+		insert into t_epcustomer
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="epcustomerId != null" >
+			  	epcustomer_id,
+			</if>
+			<if test="ownerUserid != null" >
+			  	owner_userid,
+			</if>
+			<if test="creatorUserid != null" >
+			  	creator_userid,
+			</if>
+			<if test="contactsId != null" >
+			  	contacts_id,
+			</if>
+			<if test="name != null" >
+			  	name,
+			</if>
+			<if test="origin != null" >
+			  	origin,
+			</if>
+			<if test="address != null" >
+			  	address,
+			</if>
+			<if test="zipCode != null" >
+			  zip_code,
+			</if>
+			<if test="industry != null" >
+			  	industry,
+			</if>
+			<if test="annualRevenue != null" >
+			  	annual_revenue,
+			</if>
+			<if test="ownership != null" >
+			  	ownership,
+			</if>
+			<if test="rating != null" >
+			  	rating,
+			</if>
+			<if test="createTime != null" >
+			  	create_time,
+			</if>
+			<if test="updateTime != null" >
+			  	update_time,
+			</if>
+			<if test="isDeleted != null" >
+			  	is_deleted,
+			</if>
+			<if test="isLocked != null" >
+			  	is_locked,
+			</if>
+			<if test="deleteUserid != null" >
+			  	delete_userid,
+			</if>
+			<if test="deleteTime != null" >
+			  	delete_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="epcustomerId != null" >
+			  	#{epcustomerId,jdbcType=BIGINT},
+			</if>
+			<if test="ownerUserid != null" >
+			  	#{ownerUserid,jdbcType=BIGINT},
+			</if>
+			<if test="creatorUserid != null" >
+			  	#{creatorUserid,jdbcType=BIGINT},
+			</if>
+			<if test="contactsId != null" >
+			  	#{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="name != null" >
+			  	#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="origin != null" >
+			  	#{origin,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null" >
+			  	#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null" >
+			  	#{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null" >
+			  	#{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="annualRevenue != null" >
+			  	#{annualRevenue,jdbcType=VARCHAR},
+			</if>
+			<if test="ownership != null" >
+			  	#{ownership,jdbcType=VARCHAR},
+			</if>
+			<if test="rating != null" >
+			  	#{rating,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null" >
+			  	#{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null" >
+			  	#{updateTime,jdbcType=INTEGER},
+			</if>
+			<if test="isDeleted != null" >
+			  	#{isDeleted,jdbcType=INTEGER},
+			</if>
+			<if test="isLocked != null" >
+				#{isLocked,jdbcType=INTEGER},
+			</if>
+			<if test="deleteUserid != null" >
+			  	#{deleteUserid,jdbcType=BIGINT},
+			</if>
+			<if test="deleteTime != null" >
+				#{deleteTime,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateEPCustomerInfo" parameterType="com.wicresoft.ghealth.epcustom.dto.EPCustomerDto">
+		update t_epcustomer
+		<set>
+			<if test="ownerUserid != null">
+				owner_userid = #{ownerUserid,jdbcType=BIGINT},
+			</if>
+			<if test="creatorUserid != null">
+				creator_userid = #{creatorUserid,jdbcType=BIGINT},
+			</if>
+			<if test="contactsId != null">
+				contacts_id = #{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="origin != null">
+				origin = #{origin,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="zipCode != null">
+				zip_code = #{zipCode,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				industry = #{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="annualRevenue != null">
+				annual_revenue = #{annualRevenue,jdbcType=VARCHAR},
+			</if>
+			<if test="ownership != null">
+				ownership = #{ownership,jdbcType=VARCHAR},
+			</if>
+			<if test="rating != null">
+				rating = #{rating,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=INTEGER},
+			</if>
+			<if test="isDeleted != null">
+				is_deleted = #{isDeleted,jdbcType=INTEGER},
+			</if>
+			<if test="isLocked != null">
+				is_locked = #{isLocked,jdbcType=INTEGER},
+			</if>
+			<if test="deleteUserid != null">
+				delete_userid = #{deleteUserid,jdbcType=BIGINT},
+			</if>
+			<if test="deleteTime != null">
+				delete_time = #{deleteTime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</update>
+
+
+	<insert id="insertEPCustomerDataInfo" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData">
+		insert into t_epcustomer_data
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="epcustomerId != null">
+				epcustomer_id,
+			</if>
+			<if test="noOfEmployees != null">
+				no_of_employees,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="epcustomerId != null">
+				#{epcustomerId,jdbcType=BIGINT},
+			</if>
+			<if test="noOfEmployees != null">
+				#{noOfEmployees,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateEPCustomerDataInfo" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData">
+		update t_epcustomer_data
+		<set>
+			<if test="noOfEmployees != null">
+				no_of_employees = #{noOfEmployees,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</update>
+
+
+	<update id="updateEPCustomerByContactsId" parameterType="java.lang.Long">
+		UPDATE t_epcustomer cu
+		  SET cu.contacts_id = 0
+		    AND cu.update_time = unix_timestamp(now())
+		where contacts_id = #{contactsId,jdbcType=BIGINT}
+	</update>
+
+	<delete id="deleteEPCustomerDataInfo" parameterType="java.lang.Long">
+		delete from t_epcustomer_data
+    	where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</delete>
+	
+	<update id="updateEPCustomerSetFirst" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomer">
+		UPDATE t_epcustomer
+		<set>
+			<if test="contactsId != null">
+				contacts_id = #{contactsId,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getCustomtj" resultType="com.wicresoft.ghealth.epcustom.dto.EPCustomerDto" parameterType="java.util.Map">
+		SELECT t1.userid as creatorUserid
+			 , tu.username as creatorUserName
+			 , t1.creatCount
+			 , t2.ownerCount
+		  FROM
+		    (SELECT  
+		          cu.creator_userid as userid
+		        , count(*) creatCount  
+		      FROM t_epcustomer cu
+		    WHERE cu.is_deleted = 0 
+		    <if test="userId != null and userId != '' and userId != 0">
+		   	  AND cu.creator_userid = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime1 != null and createTime1 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &gt;= #{createTime1,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime2 != null and createTime2 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &lt;= #{createTime2,jdbcType=VARCHAR}
+			</if>
+		    GROUP BY cu.creator_userid) t1
+		  LEFT  JOIN   
+		      (SELECT   
+		            cu2.owner_userid as userid
+		          , count(*) ownerCount 
+		        FROM t_epcustomer cu2   
+		      WHERE cu2.is_deleted = 0 
+		       <if test="userId != null and userId != '' and userId != 0">
+		        AND cu2.creator_userid = #{userId,jdbcType=BIGINT}
+		       </if>
+		        <if test="createTime1 != null and createTime1 != '' ">
+				   AND FROM_UNIXTIME(cu2.create_time,'%Y-%m-%d') &gt;= #{createTime1,jdbcType=VARCHAR}
+				</if>
+				<if test="createTime2 != null and createTime2 != '' ">
+				   AND FROM_UNIXTIME(cu2.create_time,'%Y-%m-%d') &lt;= #{createTime2,jdbcType=VARCHAR}
+				</if>
+		      GROUP BY cu2.owner_userid) t2
+		    ON t1.userid = t2.userid
+		  LEFT JOIN t_userinfo tu
+		    ON tu.userid = t1.userid
+	</select>
+	
+	<select id="getCustomTJygs" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+			   CASE td.no_of_employees WHEN '' THEN '其他' ELSE td.no_of_employees END	 AS `name`
+		     , count(*) `value`  
+		  FROM t_epcustomer_data td
+		LEFT JOIN t_epcustomer cu
+		  ON cu.epcustomer_id = td.epcustomer_id
+		WHERE cu.is_deleted = 0
+		    <if test="userId != null and userId != '' and userId != 0">
+		   	  AND cu.creator_userid = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime1 != null and createTime1 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &gt;= #{createTime1,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime2 != null and createTime2 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &lt;= #{createTime2,jdbcType=VARCHAR}
+			</if>
+	    GROUP BY td.no_of_employees
+		ORDER BY td.no_of_employees DESC
+	</select>
+	
+	<select id="getCustomTJOther" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+			<if test="type == 2">
+			   CASE cu.origin WHEN '' THEN '其他' ELSE cu.origin END	 as `name`
+			</if>
+			<if test="type == 4">
+			   CASE cu.annual_revenue WHEN '' THEN '其他' ELSE cu.annual_revenue END	 as `name`
+			</if>
+			<if test="type == 5">
+			   CASE cu.industry WHEN '' THEN '其他' ELSE cu.industry END	 as `name`
+			</if>
+		     , count(*) `value`  
+		  FROM t_epcustomer cu
+		WHERE cu.is_deleted = 0
+		    <if test="userId != null and userId != '' and userId != 0">
+		   	  AND cu.creator_userid = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime1 != null and createTime1 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &gt;= #{createTime1,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime2 != null and createTime2 != '' ">
+			   AND FROM_UNIXTIME(cu.create_time,'%Y-%m-%d') &lt;= #{createTime2,jdbcType=VARCHAR}
+			</if>
+		    <if test="type == 2">
+			   GROUP BY cu.origin
+			   ORDER BY cu.origin DESC
+			</if>
+			<if test="type == 4">
+			   GROUP BY cu.annual_revenue
+			   ORDER BY cu.annual_revenue DESC
+			</if>
+			<if test="type == 5">
+			   GROUP BY cu.industry
+			   ORDER BY cu.industry DESC
+			</if>
+	</select>
+	
+
+</mapper>

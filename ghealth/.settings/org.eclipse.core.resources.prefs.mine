@@ -1,0 +1,16 @@
+=\=\=\=\=\=\=
+<<<<<<<=.mine
+>>>>>>>=.r137
+eclipse.preferences.version=1
+encoding//src/main/java/com/wicresoft/ghealth/archives/service/impl/ArchivesmanagerService.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/authorization/controller/TokenController.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/authorization/interceptor/AuthorizationInterceptor.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/catering/service/impl/SetMealService.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/common/CommonConst.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/common/Utils.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/sys/service/impl/SystemAuthService.java=UTF-8
+encoding//src/main/java/com/wicresoft/ghealth/sys/service/impl/SystemUsersService.java=UTF-8
+encoding//src/test/java=UTF-8
+encoding/<project>=UTF-8
+separateDerivedEncodings=true
+|||||||=.r126

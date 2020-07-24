@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TEPCustomerDataMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    <id column="epcustomer_id" property="epcustomerId" jdbcType="BIGINT" />
+    <result column="no_of_employees" property="noOfEmployees" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    epcustomer_id, no_of_employees
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_epcustomer_data
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_epcustomer_data
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    insert into t_epcustomer_data (epcustomer_id, no_of_employees, description
+      )
+    values (#{epcustomerId,jdbcType=BIGINT}, #{noOfEmployees,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    insert into t_epcustomer_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="epcustomerId != null" >
+        epcustomer_id,
+      </if>
+      <if test="noOfEmployees != null" >
+        no_of_employees,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="epcustomerId != null" >
+        #{epcustomerId,jdbcType=BIGINT},
+      </if>
+      <if test="noOfEmployees != null" >
+        #{noOfEmployees,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    update t_epcustomer_data
+    <set >
+      <if test="noOfEmployees != null" >
+        no_of_employees = #{noOfEmployees,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    update t_epcustomer_data
+    set no_of_employees = #{noOfEmployees,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomerData" >
+    update t_epcustomer_data
+    set no_of_employees = #{noOfEmployees,jdbcType=VARCHAR}
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </update>
+</mapper>

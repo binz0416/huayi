@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TUrineMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TUrine" >
+    <id column="urine_id" property="urineId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="pro" property="pro" jdbcType="VARCHAR" />
+    <result column="bld" property="bld" jdbcType="VARCHAR" />
+    <result column="nit" property="nit" jdbcType="VARCHAR" />
+    <result column="glu" property="glu" jdbcType="VARCHAR" />
+    <result column="ket" property="ket" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    urine_id, customer_id, inspection_time, pro, bld, nit, glu, ket
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_urine
+    where urine_id = #{urineId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_urine
+    where urine_id = #{urineId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine" >
+    insert into t_urine (urine_id, customer_id, inspection_time, 
+      pro, bld, nit, glu, 
+      ket)
+    values (#{urineId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{inspectionTime,jdbcType=TIMESTAMP}, 
+      #{pro,jdbcType=VARCHAR}, #{bld,jdbcType=VARCHAR}, #{nit,jdbcType=VARCHAR}, #{glu,jdbcType=VARCHAR}, 
+      #{ket,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine" >
+    insert into t_urine
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="urineId != null" >
+        urine_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="pro != null" >
+        pro,
+      </if>
+      <if test="bld != null" >
+        bld,
+      </if>
+      <if test="nit != null" >
+        nit,
+      </if>
+      <if test="glu != null" >
+        glu,
+      </if>
+      <if test="ket != null" >
+        ket,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="urineId != null" >
+        #{urineId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro != null" >
+        #{pro,jdbcType=VARCHAR},
+      </if>
+      <if test="bld != null" >
+        #{bld,jdbcType=VARCHAR},
+      </if>
+      <if test="nit != null" >
+        #{nit,jdbcType=VARCHAR},
+      </if>
+      <if test="glu != null" >
+        #{glu,jdbcType=VARCHAR},
+      </if>
+      <if test="ket != null" >
+        #{ket,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine" >
+    update t_urine
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pro != null" >
+        pro = #{pro,jdbcType=VARCHAR},
+      </if>
+      <if test="bld != null" >
+        bld = #{bld,jdbcType=VARCHAR},
+      </if>
+      <if test="nit != null" >
+        nit = #{nit,jdbcType=VARCHAR},
+      </if>
+      <if test="glu != null" >
+        glu = #{glu,jdbcType=VARCHAR},
+      </if>
+      <if test="ket != null" >
+        ket = #{ket,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where urine_id = #{urineId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine" >
+    update t_urine
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      pro = #{pro,jdbcType=VARCHAR},
+      bld = #{bld,jdbcType=VARCHAR},
+      nit = #{nit,jdbcType=VARCHAR},
+      glu = #{glu,jdbcType=VARCHAR},
+      ket = #{ket,jdbcType=VARCHAR}
+    where urine_id = #{urineId,jdbcType=BIGINT}
+  </update>
+</mapper>

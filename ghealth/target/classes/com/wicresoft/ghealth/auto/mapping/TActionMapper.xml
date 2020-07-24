@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TActionMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TAction" >
+    <id column="action_id" property="actionId" jdbcType="VARCHAR" />
+    <result column="action_name" property="actionName" jdbcType="VARCHAR" />
+    <result column="action_description" property="actionDescription" jdbcType="VARCHAR" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_date_time" property="updateDateTime" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    action_id, action_name, action_description, create_date_time, update_date_time, deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_action
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_action
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TAction" >
+    insert into t_action (action_id, action_name, action_description, 
+      create_date_time, update_date_time, deleted
+      )
+    values (#{actionId,jdbcType=VARCHAR}, #{actionName,jdbcType=VARCHAR}, #{actionDescription,jdbcType=VARCHAR}, 
+      #{createDateTime,jdbcType=TIMESTAMP}, #{updateDateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TAction" >
+    insert into t_action
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actionId != null" >
+        action_id,
+      </if>
+      <if test="actionName != null" >
+        action_name,
+      </if>
+      <if test="actionDescription != null" >
+        action_description,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actionId != null" >
+        #{actionId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionName != null" >
+        #{actionName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionDescription != null" >
+        #{actionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TAction" >
+    update t_action
+    <set >
+      <if test="actionName != null" >
+        action_name = #{actionName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionDescription != null" >
+        action_description = #{actionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TAction" >
+    update t_action
+    set action_name = #{actionName,jdbcType=VARCHAR},
+      action_description = #{actionDescription,jdbcType=VARCHAR},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </update>
+</mapper>

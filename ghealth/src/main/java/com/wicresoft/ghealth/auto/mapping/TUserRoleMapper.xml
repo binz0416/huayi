@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TUserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TUserRole" >
+    <id column="connectionid" property="connectionid" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_date_time" property="updateDateTime" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    connectionid, user_id, role_id, create_date_time, update_date_time, deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_role
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user_role
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TUserRole" >
+    insert into t_user_role (connectionid, user_id, role_id, 
+      create_date_time, update_date_time, deleted
+      )
+    values (#{connectionid,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, 
+      #{createDateTime,jdbcType=TIMESTAMP}, #{updateDateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TUserRole" >
+    insert into t_user_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        connectionid,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        #{connectionid,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TUserRole" >
+    update t_user_role
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TUserRole" >
+    update t_user_role
+    set user_id = #{userId,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=BIGINT},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.heart.dao.ProjectmanagerDao">
+	
+	<resultMap type="com.wicresoft.ghealth.common.dto.SetMealInfo" id="mealResult">
+		<id property="setMealId" column="set_meal_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="breakfast" column="breakfast"/>
+        <result property="lunch" column="lunch"/>
+        <result property="dinner" column="dinner"/>
+        <result property="memo" column="memo"/>
+    </resultMap>
+    <select id="getCustomerMealInfos" resultMap="mealResult" parameterType="java.util.Map">
+		SELECT *
+		  FROM t_set_meal
+		WHERE customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="checkHasMeal" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT count(1)
+		  FROM t_set_meal
+         WHERE customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertCustomerMealInfo" parameterType="com.wicresoft.ghealth.common.dto.SetMealInfo" useGeneratedKeys="true" keyProperty="setMealId">
+	    insert into t_set_meal
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="setMealId != null" >
+	        set_meal_id,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="breakfast != null" >
+	        breakfast,
+	      </if>
+	      <if test="lunch != null" >
+	        lunch,
+	      </if>
+	      <if test="dinner != null" >
+	        dinner,
+	      </if>
+	      <if test="memo != null" >
+	        memo,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="setMealId != null" >
+	        #{setMealId,jdbcType=BIGINT},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="breakfast != null" >
+	        #{breakfast,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="lunch != null" >
+	        #{lunch,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="dinner != null" >
+	        #{dinner,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="memo != null" >
+	        #{memo,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+	
+	<update id="updateCustomerMealInfo" parameterType="com.wicresoft.ghealth.common.dto.SetMealInfo" >
+	    update t_set_meal
+	    <set >
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="breakfast != null" >
+	        breakfast = #{breakfast,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="lunch != null" >
+	        lunch = #{lunch,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="dinner != null" >
+	        dinner = #{dinner,jdbcType=LONGVARCHAR},
+	      </if>
+	      <if test="memo != null" >
+	        memo = #{memo,jdbcType=LONGVARCHAR},
+	      </if>
+	    </set>
+	    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </update>
+    
+</mapper>

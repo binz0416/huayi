@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.heart.dao.DataunscrambleDao">
+
+	<!-- 原始数据  start-->
+	
+	<!-- 穿戴设备-心电检测 -->
+	<select id="getHeartInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.*
+			 , DATE_FORMAT(a.customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+			 , c.archives_detail_id AS detailId
+		     , c.advise AS detailAdvise
+		     , c.type
+		  FROM t_heart a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.startTime
+		    AND c.sc_id = a.heart_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+	    WHERE a.customer_id = #{customerId,jdbcType=VARCHAR} 
+	    ORDER BY a.startTime DESC LIMIT 1
+	</select>
+	<!-- 心电数据文件地址 -->
+	<select id="getUrl" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT h.uuid
+	         , h.url
+		  FROM t_archives ta
+		 LEFT JOIN (
+					  SELECT tad.sc_id
+		                   , tad.archives_id
+		                   , tad.archives_detail_id
+		                   , tad.type
+						   , tad.advise as detailAdvise
+						   , tad.inspection_time
+					    FROM t_archives_detail tad
+		               INNER JOIN (
+									SELECT MAX(inspection_time) as inspection_time
+										 , archives_id
+										 , type
+								      FROM t_archives_detail
+									 GROUP BY archives_id
+										    , type
+								  ) maxdate
+		                  ON tad.archives_id = maxdate.archives_id
+						  AND tad.type = maxdate.type
+		                  AND tad.inspection_time = maxdate.inspection_time
+		             ) tmp
+		    ON ta.archives_id = tmp.archives_id
+		  LEFT JOIN t_heart h
+			ON h.heart_id = tmp.sc_id
+	     WHERE ta.customer_id = #{customerId,jdbcType=VARCHAR} 
+	     	AND tmp.type = #{type,jdbcType=INTEGER}
+	</select>
+				
+	<!-- 毒素检测 -->
+	<select id="getToxinInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		      , c.archives_detail_id AS detailId
+		      , c.advise AS detailAdvise
+		      , c.type
+		  FROM t_toxin a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.inspection_time
+		    AND c.sc_id = a.toxin_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+	    WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+
+	<!-- 血液检测 -->
+	<select id="getPhysicalBloodInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.*
+			 , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+			 , c.archives_detail_id AS detailId
+		     , c.advise AS detailAdvise
+		     , c.type
+		  FROM t_physical_blood a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.inspection_time
+		    AND c.sc_id = a.blood_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+	
+	<!-- 超声检测 -->
+	<select id="getPhysicalUltrasoundInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		      , c.archives_detail_id AS detailId
+		      , c.advise AS detailAdvise
+		      , c.type
+		  FROM t_physical_ultrasound a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.inspection_time
+		    AND c.sc_id = a.ultrasound_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+	
+	<!-- 尿液检测 -->
+	<select id="getPhysicalUrineInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		      , c.archives_detail_id AS detailId
+		      , c.advise AS detailAdvise
+		      , c.type
+		  FROM t_urine a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.inspection_time
+		    AND c.sc_id = a.urine_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+	
+	<!-- 太空舱 -->
+	<select id="getSpacecapsuleInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		select a.*
+		      , DATE_FORMAT(a.customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+		      , DATE_FORMAT(a.start_time,'%Y-%m-%d') as startTime
+		      , DATE_FORMAT(a.end_time,'%Y-%m-%d') as endTime
+		      , c.archives_detail_id AS detailId
+		      , c.advise AS detailAdvise
+		      , c.type
+		  FROM t_spacecapsule a
+		 LEFT JOIN t_archives b
+		   ON b.customer_id = a.customer_id
+		 LEFT JOIN t_archives_detail c
+		   ON c.archives_id = b.archives_id
+		    AND c.inspection_time = a.start_time
+		    AND c.sc_id = a.spacecapsule_id
+		    AND c.type = #{type,jdbcType=INTEGER}
+	    WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.start_time DESC LIMIT 1
+	</select>
+	<!-- 原始数据  end-->
+
+	<!-- 业务数据  start-->
+	
+	<!-- 档案 -->
+	<select id="getArchiveInfos" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT a.*
+		  FROM t_archives a
+		WHERE a.customer_id = #{customerId}
+	</select>
+	
+	<insert id="insertArchivesDetail" parameterType="com.wicresoft.ghealth.common.dto.ArchivesDetailDto" >
+	    insert into t_archives_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="archivesDetailId != null" >
+	        archives_detail_id,
+	      </if>
+	      <if test="archivesId != null" >
+	        archives_id,
+	      </if>
+	      <if test="inspectionTime != null" >
+	        inspection_time,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="scId != null" >
+	        sc_id,
+	      </if>
+	      <if test="advise != null" >
+	        advise,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="archivesDetailId != null" >
+	        #{archivesDetailId,jdbcType=BIGINT},
+	      </if>
+	      <if test="archivesId != null" >
+	        #{archivesId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="inspectionTime != null" >
+	        #{inspectionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="type != null" >
+	        #{type,jdbcType=INTEGER},
+	      </if>
+	      <if test="scId != null" >
+	        #{scId,jdbcType=BIGINT},
+	      </if>
+	      <if test="advise != null" >
+	        #{advise,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateArchivesDetail" parameterType="com.wicresoft.ghealth.common.dto.ArchivesDetailDto" >
+	    update t_archives_detail
+	    <set >
+	      <if test="archivesId != null" >
+	        archives_id = #{archivesId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="inspectionTime != null" >
+	        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="type != null" >
+	        type = #{type,jdbcType=INTEGER},
+	      </if>
+	      <if test="scId != null" >
+	        sc_id = #{scId,jdbcType=BIGINT},
+	      </if>
+	      <if test="advise != null" >
+	        advise = #{advise,jdbcType=LONGVARCHAR},
+	      </if>
+	    </set>
+	    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+	</update>
+		
+	<!-- 业务数据  end-->
+	
+</mapper>

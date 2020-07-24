@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.archives.dao.ArchivesDao">
+	<select id="getArchives" resultType="java.util.Map" parameterType="java.util.Map"> 
+		SELECT ta.archives_id as archivesId
+			 , ta.advise
+		     , tmp.sc_id as scId
+		     , tmp.type as type
+             , tmp.detailAdvise
+		  FROM t_archives ta
+		 LEFT JOIN (
+					  SELECT tad.sc_id
+		                   , tad.archives_id
+		                   , tad.archives_detail_id
+		                   , tad.type
+						   , tad.advise as detailAdvise
+						   , tad.inspection_time
+					    FROM t_archives_detail tad
+		               INNER JOIN (
+									SELECT MAX(inspection_time) as inspection_time
+										 , archives_id
+										 , type
+								      FROM t_archives_detail
+									 GROUP BY archives_id
+										    , type
+								  ) maxdate
+		                  ON tad.archives_id = maxdate.archives_id
+						  AND tad.type = maxdate.type
+		                  AND tad.inspection_time = maxdate.inspection_time
+		             ) tmp
+		    ON ta.archives_id = tmp.archives_id
+		 WHERE ta.customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getSpacecapsuleInfos" resultType="java.util.Map" parameterType="java.lang.Long"> 
+		SELECT *
+		     , DATE_FORMAT(customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+		     , DATE_FORMAT(start_time,'%Y-%m-%d') as startTimeDsp
+		     , DATE_FORMAT(end_time,'%Y-%m-%d') as endTimeDsp
+		  FROM t_spacecapsule
+		 WHERE spacecapsule_id = #{spacecapsuleId}
+	</select>
+	
+	<select id="getToxinReport" resultType="java.lang.String" parameterType="java.lang.Long"> 
+		SELECT report_area as reportArea
+		  FROM t_toxin
+		 WHERE toxin_id = #{toxinId}
+	</select>
+	
+	<select id="getPhysicalBloodInfos" resultType="java.util.Map" parameterType="java.lang.Long"> 
+		SELECT *
+		      , DATE_FORMAT(inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_physical_blood
+		 WHERE blood_id = #{bloodId}
+	</select>
+	
+	<select id="getPhysicalUltrasoundInfos" resultType="java.util.Map" parameterType="java.lang.Long"> 
+		SELECT *
+		      , DATE_FORMAT(inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_physical_ultrasound
+		 WHERE ultrasound_id = #{ultrasoundId}
+	</select>
+	
+	<select id="getPhysicalUrineInfos" resultType="java.util.Map" parameterType="java.lang.Long"> 
+		SELECT *
+		     , DATE_FORMAT(inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_urine
+		 WHERE urine_id = #{urineId}
+	</select>
+	
+	<select id="getComprehensiveInfos" resultType="java.lang.String" parameterType="java.lang.Long"> 
+		SELECT report_area as reportArea
+		  FROM t_comprehensive
+		 WHERE comprehensive_id = #{comprehensiveId}
+	</select>
+	
+	<select id="getHeartReport" resultType="java.util.Map" parameterType="java.lang.Long"> 
+		SELECT *
+			 , DATE_FORMAT(customer_checkin,'%Y-%m-%d') as customerCheckinDsp
+		  FROM t_heart
+		 WHERE heart_id = #{HeartId}
+	</select>
+	
+	<select id="getUrl" resultType="java.util.Map" parameterType="java.util.Map">	    
+	    SELECT h.uuid
+	         , h.url
+		  FROM t_archives ta
+		 LEFT JOIN (
+					  SELECT tad.sc_id
+		                   , tad.archives_id
+		                   , tad.archives_detail_id
+		                   , tad.type
+						   , tad.advise as detailAdvise
+						   , tad.inspection_time
+					    FROM t_archives_detail tad
+		               INNER JOIN (
+									SELECT MAX(inspection_time) as inspection_time
+										 , archives_id
+										 , type
+								      FROM t_archives_detail
+									 GROUP BY archives_id
+										    , type
+								  ) maxdate
+		                  ON tad.archives_id = maxdate.archives_id
+						  AND tad.type = maxdate.type
+		                  AND tad.inspection_time = maxdate.inspection_time
+		             ) tmp
+		    ON ta.archives_id = tmp.archives_id
+		  LEFT JOIN t_heart h
+			ON h.heart_id = tmp.sc_id
+	     WHERE ta.customer_id = #{customerId,jdbcType=VARCHAR} 
+	     	AND tmp.type = #{type,jdbcType=INTEGER}
+	</select>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TSpacecapsuleMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TSpacecapsule" >
+    <id column="spacecapsule_id" property="spacecapsuleId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_checkin" property="customerCheckin" jdbcType="TIMESTAMP" />
+    <result column="report_id" property="reportId" jdbcType="VARCHAR" />
+    <result column="machine_sn" property="machineSn" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    spacecapsule_id, customer_id, customer_checkin, report_id, machine_sn, start_time, 
+    end_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_spacecapsule
+    where spacecapsule_id = #{spacecapsuleId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_spacecapsule
+    where spacecapsule_id = #{spacecapsuleId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TSpacecapsule" >
+    insert into t_spacecapsule (spacecapsule_id, customer_id, customer_checkin, 
+      report_id, machine_sn, start_time, 
+      end_time)
+    values (#{spacecapsuleId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{customerCheckin,jdbcType=TIMESTAMP}, 
+      #{reportId,jdbcType=VARCHAR}, #{machineSn,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TSpacecapsule" >
+    insert into t_spacecapsule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="spacecapsuleId != null" >
+        spacecapsule_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin,
+      </if>
+      <if test="reportId != null" >
+        report_id,
+      </if>
+      <if test="machineSn != null" >
+        machine_sn,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="spacecapsuleId != null" >
+        #{spacecapsuleId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportId != null" >
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="machineSn != null" >
+        #{machineSn,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TSpacecapsule" >
+    update t_spacecapsule
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportId != null" >
+        report_id = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="machineSn != null" >
+        machine_sn = #{machineSn,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where spacecapsule_id = #{spacecapsuleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TSpacecapsule" >
+    update t_spacecapsule
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      report_id = #{reportId,jdbcType=VARCHAR},
+      machine_sn = #{machineSn,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
+    where spacecapsule_id = #{spacecapsuleId,jdbcType=BIGINT}
+  </update>
+</mapper>

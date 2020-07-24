@@ -1,0 +1,67 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<html>
+<head>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/test/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript"
+	src="<%=request.getContextPath()%>/test/jquery.md5.js"></script>
+</head>
+<body>
+	<h2>客户合同</h2>
+	<form id="ff" method="post" enctype="multipart/form-data" >
+		上传：<%=request.getContextPath()%>/toxindetection/upload<br />
+		下载：<%=request.getContextPath()%>/toxindetection/download<br />
+		 URL:<textarea rows="1" cols="" style="width: 80%; margin: 5px;" id="url"><%=request.getContextPath()%>/toxindetection/upload</textarea><br /> 
+		令牌：<input type="text" id="token"><br/>
+		令牌用户名：<input type="text" id="loginUser"><br/>
+		文件名<input type="text" id="fileName"><br/>
+		上传文件<input type="file" name="uploadfile" /><br/> 
+		OUT:<textarea rows="20" cols="" style="width: 80%; margin: 5px;" id="ret"></textarea><br />
+	</form>
+	<button type="button" onclick="filepost()">文件提交</button>
+	<button type="button" onclick="setData()">设定</button>
+	<a href="" id="myId">文件下载</a> 
+</body>
+<script type="text/javascript">
+	function filepost() {
+		var acitonurl = $("#url").val();
+		var fd = new FormData();
+		fd.append( "uploadfile", $("input[name=uploadfile]")[0].files[0]);
+		fd.append( "apiflag", "");
+		$.ajax({
+			type : 'post', 
+			url : acitonurl,
+            data : fd,
+            contentType: false,
+            processData: false,
+            cache: false,
+			beforeSend: function(request) {
+				token = $("#token").val();
+				loginUser = $("#loginUser").val();
+	            request.setRequestHeader("Authorization", token);
+	            request.setRequestHeader("LoginUser", loginUser);
+	        },
+			success : function(data) {
+				alert("OK!");
+				var aToStr = JSON.stringify(data);
+				$("#ret").val(aToStr);
+			},
+			error : function(data) {
+				alert("ERROR!");
+				var aToStr = JSON.stringify(data);
+				$("#ret").val(aToStr);
+			}
+		});
+	}
+	function setData() {
+		var acitonurl = $("#url").val();
+		token = $("#token").val();
+		acitonurl = acitonurl + "?Authorization=" + token;
+		loginUser = $("#loginUser").val();
+		acitonurl = acitonurl + "&LoginUser=" + loginUser;
+		filename = $("#fileName").val();
+		acitonurl = acitonurl + "&fileName=" + filename;
+		$("#myId").attr("href",acitonurl); 
+	}
+</script>
+</html>

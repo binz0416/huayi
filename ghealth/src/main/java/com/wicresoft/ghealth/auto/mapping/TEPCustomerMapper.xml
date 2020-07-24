@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TEPCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TEPCustomer" >
+    <id column="epcustomer_id" property="epcustomerId" jdbcType="BIGINT" />
+    <result column="owner_userid" property="ownerUserid" jdbcType="BIGINT" />
+    <result column="creator_userid" property="creatorUserid" jdbcType="BIGINT" />
+    <result column="contacts_id" property="contactsId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="industry" property="industry" jdbcType="VARCHAR" />
+    <result column="annual_revenue" property="annualRevenue" jdbcType="VARCHAR" />
+    <result column="ownership" property="ownership" jdbcType="VARCHAR" />
+    <result column="rating" property="rating" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="is_locked" property="isLocked" jdbcType="INTEGER" />
+    <result column="delete_userid" property="deleteUserid" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    epcustomer_id, owner_userid, creator_userid, contacts_id, name, origin, address, 
+    zip_code, industry, annual_revenue, ownership, rating, create_time, update_time, 
+    is_deleted, is_locked, delete_userid, delete_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_epcustomer
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_epcustomer
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomer" >
+    insert into t_epcustomer (epcustomer_id, owner_userid, creator_userid, 
+      contacts_id, name, origin, 
+      address, zip_code, industry, 
+      annual_revenue, ownership, rating, 
+      create_time, update_time, is_deleted, 
+      is_locked, delete_userid, delete_time
+      )
+    values (#{epcustomerId,jdbcType=BIGINT}, #{ownerUserid,jdbcType=BIGINT}, #{creatorUserid,jdbcType=BIGINT}, 
+      #{contactsId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, 
+      #{annualRevenue,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{rating,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}, 
+      #{isLocked,jdbcType=INTEGER}, #{deleteUserid,jdbcType=BIGINT}, #{deleteTime,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomer" >
+    insert into t_epcustomer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="epcustomerId != null" >
+        epcustomer_id,
+      </if>
+      <if test="ownerUserid != null" >
+        owner_userid,
+      </if>
+      <if test="creatorUserid != null" >
+        creator_userid,
+      </if>
+      <if test="contactsId != null" >
+        contacts_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="origin != null" >
+        origin,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="industry != null" >
+        industry,
+      </if>
+      <if test="annualRevenue != null" >
+        annual_revenue,
+      </if>
+      <if test="ownership != null" >
+        ownership,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="isLocked != null" >
+        is_locked,
+      </if>
+      <if test="deleteUserid != null" >
+        delete_userid,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="epcustomerId != null" >
+        #{epcustomerId,jdbcType=BIGINT},
+      </if>
+      <if test="ownerUserid != null" >
+        #{ownerUserid,jdbcType=BIGINT},
+      </if>
+      <if test="creatorUserid != null" >
+        #{creatorUserid,jdbcType=BIGINT},
+      </if>
+      <if test="contactsId != null" >
+        #{contactsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="annualRevenue != null" >
+        #{annualRevenue,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null" >
+        #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        #{rating,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null" >
+        #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="deleteUserid != null" >
+        #{deleteUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomer" >
+    update t_epcustomer
+    <set >
+      <if test="ownerUserid != null" >
+        owner_userid = #{ownerUserid,jdbcType=BIGINT},
+      </if>
+      <if test="creatorUserid != null" >
+        creator_userid = #{creatorUserid,jdbcType=BIGINT},
+      </if>
+      <if test="contactsId != null" >
+        contacts_id = #{contactsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="annualRevenue != null" >
+        annual_revenue = #{annualRevenue,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null" >
+        ownership = #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null" >
+        is_locked = #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="deleteUserid != null" >
+        delete_userid = #{deleteUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TEPCustomer" >
+    update t_epcustomer
+    set owner_userid = #{ownerUserid,jdbcType=BIGINT},
+      creator_userid = #{creatorUserid,jdbcType=BIGINT},
+      contacts_id = #{contactsId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      origin = #{origin,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR},
+      annual_revenue = #{annualRevenue,jdbcType=VARCHAR},
+      ownership = #{ownership,jdbcType=VARCHAR},
+      rating = #{rating,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      is_locked = #{isLocked,jdbcType=INTEGER},
+      delete_userid = #{deleteUserid,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=INTEGER}
+    where epcustomer_id = #{epcustomerId,jdbcType=BIGINT}
+  </update>
+</mapper>

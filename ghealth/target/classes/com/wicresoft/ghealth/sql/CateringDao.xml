@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.catering.dao.CateringDao">
+	<resultMap id="catering" type="com.wicresoft.ghealth.auto.pojo.TCatering">
+		<id column="catering_id" property="cateringId" jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="set_meal_id" property="setMealId" jdbcType="BIGINT" />
+		<result column="face_id" property="faceId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="capture_time" property="captureTime" jdbcType="TIMESTAMP" />
+		<result column="camera_no" property="cameraNo" jdbcType="VARCHAR" />
+		<result column="valid" property="valid" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="set_meal" type="com.wicresoft.ghealth.auto.pojo.TSetMeal">
+		<id column="set_meal_id" property="setMealId" jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="mealContent" property="mealcontent" jdbcType="VARCHAR" />
+		<result column="meal_id" property="mealId" jdbcType="BIGINT" />
+		<result column="mealCount" property="mealcount" jdbcType="BIGINT" />
+		<result column="diet_type" property="dietType" jdbcType="INTEGER" />
+		<result column="diet_start" property="dietStart" jdbcType="VARCHAR" />
+		<result column="diet_end" property="dietEnd" jdbcType="VARCHAR" />
+		<result column="meals" property="meals" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="customer" type="com.wicresoft.ghealth.auto.pojo.TCustomer">
+		<id column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="face_id" property="faceId" jdbcType="INTEGER" />
+		<result column="no" property="no" jdbcType="VARCHAR" />
+		<result column="idCard" property="idcard" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+		<result column="birthPlace" property="birthplace" jdbcType="VARCHAR" />
+		<result column="usualAddress" property="usualaddress" jdbcType="VARCHAR" />
+		<result column="ethnic" property="ethnic" jdbcType="VARCHAR" />
+		<result column="culture" property="culture" jdbcType="VARCHAR" />
+		<result column="professions" property="professions" jdbcType="VARCHAR" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="marriage" property="marriage" jdbcType="VARCHAR" />
+		<result column="workUnits" property="workunits" jdbcType="VARCHAR" />
+		<result column="duty" property="duty" jdbcType="VARCHAR" />
+		<result column="unitsPhone" property="unitsphone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="medicalExpenses" property="medicalexpenses"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectByFaceid" resultMap="customer"
+		parameterType="java.util.Map">
+		select
+		customer_id, face_id, no, idCard, name, gender,
+		birthday, photo, birthPlace, usualAddress,
+		ethnic, culture,
+		professions, income, marriage, workUnits, duty, unitsPhone,
+		address,
+		phone, mobile, medicalExpenses
+		from t_customer
+		where face_id =
+		#{faceId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="catering" parameterType="java.util.Map">
+		select
+		catering_id, customer_id, set_meal_id, face_id, name,
+		capture_time, camera_no, valid
+		from t_catering
+		where
+		date_format(now(),'%Y%m%d') = date_format(capture_time,'%Y%m%d')
+		and
+		(valid != 1 or valid is null )
+	</select>
+	<select id="selectByUse" resultMap="set_meal" parameterType="java.util.Map">
+		select
+		set_meal_id, customer_id, mealContent, meal_id,
+		mealCount,
+		diet_type, diet_start,
+		diet_end, meals
+		from t_set_meal
+		where
+		(diet_start
+		&lt;= DATE_FORMAT(now(),'%H%I')
+		and
+		diet_end &gt;=
+		DATE_FORMAT(now(),'%H%I'))
+		and customer_id =
+		#{customerId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getCustomerMeals" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT set_meal_id as setMealId
+		     , customer_id as customerId
+		     , breakfast
+		     , lunch
+		     , dinner
+		  FROM t_set_meal
+		WHERE customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

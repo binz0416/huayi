@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TRoleMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TRoleMenu" >
+    <id column="connectionid" property="connectionid" jdbcType="BIGINT" />
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="permission_action" property="permissionAction" jdbcType="VARCHAR" />
+    <result column="create_date_time" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="update_date_time" property="updateDateTime" jdbcType="TIMESTAMP" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    connectionid, role_id, menu_id, permission_action, create_date_time, update_date_time, 
+    deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role_menu
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_role_menu
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TRoleMenu" >
+    insert into t_role_menu (connectionid, role_id, menu_id, 
+      permission_action, create_date_time, update_date_time, 
+      deleted)
+    values (#{connectionid,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{menuId,jdbcType=VARCHAR}, 
+      #{permissionAction,jdbcType=VARCHAR}, #{createDateTime,jdbcType=TIMESTAMP}, #{updateDateTime,jdbcType=TIMESTAMP}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TRoleMenu" >
+    insert into t_role_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        connectionid,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="permissionAction != null" >
+        permission_action,
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time,
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="connectionid != null" >
+        #{connectionid,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionAction != null" >
+        #{permissionAction,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TRoleMenu" >
+    update t_role_menu
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionAction != null" >
+        permission_action = #{permissionAction,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null" >
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDateTime != null" >
+        update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TRoleMenu" >
+    update t_role_menu
+    set role_id = #{roleId,jdbcType=BIGINT},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      permission_action = #{permissionAction,jdbcType=VARCHAR},
+      create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      update_date_time = #{updateDateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where connectionid = #{connectionid,jdbcType=BIGINT}
+  </update>
+</mapper>

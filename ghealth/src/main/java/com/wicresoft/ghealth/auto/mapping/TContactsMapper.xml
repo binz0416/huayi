@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TContactsMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TContacts" >
+    <id column="contacts_id" property="contactsId" jdbcType="BIGINT" />
+    <result column="creator_userid" property="creatorUserid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="saltname" property="saltname" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="qq_no" property="qqNo" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="delete_userid" property="deleteUserid" jdbcType="BIGINT" />
+    <result column="delete_time" property="deleteTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    contacts_id, creator_userid, name, post, department, sex, saltname, telephone, email, 
+    qq_no, address, zip_code, description, create_time, update_time, is_deleted, delete_userid, 
+    delete_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_contacts
+    where contacts_id = #{contactsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_contacts
+    where contacts_id = #{contactsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TContacts" >
+    insert into t_contacts (contacts_id, creator_userid, name, 
+      post, department, sex, 
+      saltname, telephone, email, 
+      qq_no, address, zip_code, 
+      description, create_time, update_time, 
+      is_deleted, delete_userid, delete_time
+      )
+    values (#{contactsId,jdbcType=BIGINT}, #{creatorUserid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{post,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+      #{saltname,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{qqNo,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}, 
+      #{isDeleted,jdbcType=INTEGER}, #{deleteUserid,jdbcType=BIGINT}, #{deleteTime,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TContacts" >
+    insert into t_contacts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contactsId != null" >
+        contacts_id,
+      </if>
+      <if test="creatorUserid != null" >
+        creator_userid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="saltname != null" >
+        saltname,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="qqNo != null" >
+        qq_no,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="deleteUserid != null" >
+        delete_userid,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contactsId != null" >
+        #{contactsId,jdbcType=BIGINT},
+      </if>
+      <if test="creatorUserid != null" >
+        #{creatorUserid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="saltname != null" >
+        #{saltname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNo != null" >
+        #{qqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="deleteUserid != null" >
+        #{deleteUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TContacts" >
+    update t_contacts
+    <set >
+      <if test="creatorUserid != null" >
+        creator_userid = #{creatorUserid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null" >
+        post = #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="saltname != null" >
+        saltname = #{saltname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNo != null" >
+        qq_no = #{qqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="deleteUserid != null" >
+        delete_userid = #{deleteUserid,jdbcType=BIGINT},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where contacts_id = #{contactsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TContacts" >
+    update t_contacts
+    set creator_userid = #{creatorUserid,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      post = #{post,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      saltname = #{saltname,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      qq_no = #{qqNo,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      delete_userid = #{deleteUserid,jdbcType=BIGINT},
+      delete_time = #{deleteTime,jdbcType=INTEGER}
+    where contacts_id = #{contactsId,jdbcType=BIGINT}
+  </update>
+</mapper>

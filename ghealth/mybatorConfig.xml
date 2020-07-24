@@ -1,0 +1,184 @@
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry location="D:/mysql-connector-java-5.1.26-bin.jar" />
+	<context id="tms-webR7" targetRuntime="MyBatis3"
+		defaultModelType="conditional">
+
+		<property name="mergeable" value="false"></property>
+
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://172.18.130.247:3306/ghealthUT" userId="admin"
+			password="admin">
+		</jdbcConnection>
+
+		<javaModelGenerator targetPackage="com.wicresoft.ghealth.auto.pojo"
+			targetProject="ghealth">
+			<property name="enableSubPackages" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="com.wicresoft.ghealth.auto.mapping"
+			targetProject="ghealth">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.wicresoft.ghealth.auto.mapper" targetProject="ghealth">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_action" domainObjectName="TAction"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_actlog" domainObjectName="TActlog"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_api" domainObjectName="TApi" enableInsert="true"
+			enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
+			enableDeleteByPrimaryKey="true" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		<table tableName="t_archives" domainObjectName="TArchives"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_archives_detail" domainObjectName="TArchivesDetail"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_catering" domainObjectName="TCatering"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_comprehensive" domainObjectName="TComprehensive"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_customer" domainObjectName="TCustomer"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_customer_checkin" domainObjectName="TCustomerCheckin"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_heart" domainObjectName="THeart"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_machine" domainObjectName="TMachine"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_machine_log" domainObjectName="TMachineLog"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_menuitem" domainObjectName="TMenuitem"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_options" domainObjectName="TOptions"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_organization" domainObjectName="TOrganization"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_physical_blood" domainObjectName="TPhysicalBlood"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_physical_ultrasound" domainObjectName="TPhysicalUltrasound"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_role" domainObjectName="TRole" enableInsert="true"
+			enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
+			enableDeleteByPrimaryKey="true" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		<table tableName="t_role_menu" domainObjectName="TRoleMenu"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_set_meal" domainObjectName="TSetMeal"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_spacecapsule" domainObjectName="TSpacecapsule"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_toxin" domainObjectName="TToxin"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_urine" domainObjectName="TUrine"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_user_role" domainObjectName="TUserRole"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+		<table tableName="t_userinfo" domainObjectName="TUserinfo"
+			enableInsert="true" enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false"></table>
+	</context>
+</generatorConfiguration>

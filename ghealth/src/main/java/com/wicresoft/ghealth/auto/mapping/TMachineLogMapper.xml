@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TMachineLogMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    <id column="machine_log_id" property="machineLogId" jdbcType="BIGINT" />
+    <result column="machine_id" property="machineId" jdbcType="BIGINT" />
+    <result column="connect_date" property="connectDate" jdbcType="DATE" />
+    <result column="connect_result" property="connectResult" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TMachineLog" extends="BaseResultMap" >
+    <result column="connect_log" property="connectLog" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    machine_log_id, machine_id, connect_date, connect_result
+  </sql>
+  <sql id="Blob_Column_List" >
+    connect_log
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_machine_log
+    where machine_log_id = #{machineLogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_machine_log
+    where machine_log_id = #{machineLogId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    insert into t_machine_log (machine_log_id, machine_id, connect_date, 
+      connect_result, connect_log)
+    values (#{machineLogId,jdbcType=BIGINT}, #{machineId,jdbcType=BIGINT}, #{connectDate,jdbcType=DATE}, 
+      #{connectResult,jdbcType=VARCHAR}, #{connectLog,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    insert into t_machine_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="machineLogId != null" >
+        machine_log_id,
+      </if>
+      <if test="machineId != null" >
+        machine_id,
+      </if>
+      <if test="connectDate != null" >
+        connect_date,
+      </if>
+      <if test="connectResult != null" >
+        connect_result,
+      </if>
+      <if test="connectLog != null" >
+        connect_log,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="machineLogId != null" >
+        #{machineLogId,jdbcType=BIGINT},
+      </if>
+      <if test="machineId != null" >
+        #{machineId,jdbcType=BIGINT},
+      </if>
+      <if test="connectDate != null" >
+        #{connectDate,jdbcType=DATE},
+      </if>
+      <if test="connectResult != null" >
+        #{connectResult,jdbcType=VARCHAR},
+      </if>
+      <if test="connectLog != null" >
+        #{connectLog,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    update t_machine_log
+    <set >
+      <if test="machineId != null" >
+        machine_id = #{machineId,jdbcType=BIGINT},
+      </if>
+      <if test="connectDate != null" >
+        connect_date = #{connectDate,jdbcType=DATE},
+      </if>
+      <if test="connectResult != null" >
+        connect_result = #{connectResult,jdbcType=VARCHAR},
+      </if>
+      <if test="connectLog != null" >
+        connect_log = #{connectLog,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where machine_log_id = #{machineLogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    update t_machine_log
+    set machine_id = #{machineId,jdbcType=BIGINT},
+      connect_date = #{connectDate,jdbcType=DATE},
+      connect_result = #{connectResult,jdbcType=VARCHAR},
+      connect_log = #{connectLog,jdbcType=LONGVARCHAR}
+    where machine_log_id = #{machineLogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TMachineLog" >
+    update t_machine_log
+    set machine_id = #{machineId,jdbcType=BIGINT},
+      connect_date = #{connectDate,jdbcType=DATE},
+      connect_result = #{connectResult,jdbcType=VARCHAR}
+    where machine_log_id = #{machineLogId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TSetMealMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TSetMeal" >
+    <id column="set_meal_id" property="setMealId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TSetMealWithBLOBs" extends="BaseResultMap" >
+    <result column="breakfast" property="breakfast" jdbcType="LONGVARCHAR" />
+    <result column="lunch" property="lunch" jdbcType="LONGVARCHAR" />
+    <result column="dinner" property="dinner" jdbcType="LONGVARCHAR" />
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    set_meal_id, customer_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    breakfast, lunch, dinner, memo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_set_meal
+    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_set_meal
+    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TSetMealWithBLOBs" >
+    insert into t_set_meal (set_meal_id, customer_id, breakfast, 
+      lunch, dinner, memo
+      )
+    values (#{setMealId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{breakfast,jdbcType=LONGVARCHAR}, 
+      #{lunch,jdbcType=LONGVARCHAR}, #{dinner,jdbcType=LONGVARCHAR}, #{memo,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TSetMealWithBLOBs" >
+    insert into t_set_meal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="setMealId != null" >
+        set_meal_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="breakfast != null" >
+        breakfast,
+      </if>
+      <if test="lunch != null" >
+        lunch,
+      </if>
+      <if test="dinner != null" >
+        dinner,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="setMealId != null" >
+        #{setMealId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="breakfast != null" >
+        #{breakfast,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lunch != null" >
+        #{lunch,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dinner != null" >
+        #{dinner,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TSetMealWithBLOBs" >
+    update t_set_meal
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="breakfast != null" >
+        breakfast = #{breakfast,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lunch != null" >
+        lunch = #{lunch,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dinner != null" >
+        dinner = #{dinner,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TSetMealWithBLOBs" >
+    update t_set_meal
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      breakfast = #{breakfast,jdbcType=LONGVARCHAR},
+      lunch = #{lunch,jdbcType=LONGVARCHAR},
+      dinner = #{dinner,jdbcType=LONGVARCHAR},
+      memo = #{memo,jdbcType=LONGVARCHAR}
+    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TSetMeal" >
+    update t_set_meal
+    set customer_id = #{customerId,jdbcType=VARCHAR}
+    where set_meal_id = #{setMealId,jdbcType=BIGINT}
+  </update>
+</mapper>

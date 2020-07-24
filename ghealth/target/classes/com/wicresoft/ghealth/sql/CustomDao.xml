@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.custom.dao.CustomDao">
+	<resultMap id="customer" type="com.wicresoft.ghealth.auto.pojo.TCustomer">
+		<id column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="face_id" property="faceId" jdbcType="INTEGER" />
+		<result column="no" property="no" jdbcType="VARCHAR" />
+		<result column="idCard" property="idcard" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+		<result column="birthPlace" property="birthplace" jdbcType="VARCHAR" />
+		<result column="usualAddress" property="usualaddress" jdbcType="VARCHAR" />
+		<result column="ethnic" property="ethnic" jdbcType="VARCHAR" />
+		<result column="culture" property="culture" jdbcType="VARCHAR" />
+		<result column="professions" property="professions" jdbcType="VARCHAR" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="marriage" property="marriage" jdbcType="VARCHAR" />
+		<result column="workUnits" property="workunits" jdbcType="VARCHAR" />
+		<result column="duty" property="duty" jdbcType="VARCHAR" />
+		<result column="unitsPhone" property="unitsphone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="medicalExpenses" property="medicalexpenses"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="organization" type="com.wicresoft.ghealth.auto.pojo.TOrganization">
+		<id column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+		<result column="organization_name" property="organizationName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectByIdcard" resultMap="customer" parameterType="java.lang.String">
+		select
+		customer_id, face_id, no, idCard, name, gender,
+		birthday, photo,
+		birthPlace, usualAddress,
+		ethnic, culture, professions, income,
+		marriage, workUnits, duty, unitsPhone,
+		address,
+		phone, mobile,
+		medicalExpenses
+		from t_customer
+		where idCard =
+		#{idcard,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByOrganizationId" resultMap="organization"
+		parameterType="java.lang.String">
+		select
+		organization_id,
+		organization_name
+		from t_organization
+		where organization_id =
+		#{organizationId,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TMachineMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TMachine" >
+    <id column="machine_id" property="machineId" jdbcType="BIGINT" />
+    <result column="organization_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="machine_type" property="machineType" jdbcType="INTEGER" />
+    <result column="machine_sn" property="machineSn" jdbcType="VARCHAR" />
+    <result column="roomNum" property="roomnum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    machine_id, organization_id, machine_type, machine_sn, roomNum
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_machine
+    where machine_id = #{machineId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_machine
+    where machine_id = #{machineId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TMachine" >
+    insert into t_machine (machine_id, organization_id, machine_type, 
+      machine_sn, roomNum)
+    values (#{machineId,jdbcType=BIGINT}, #{organizationId,jdbcType=VARCHAR}, #{machineType,jdbcType=INTEGER}, 
+      #{machineSn,jdbcType=VARCHAR}, #{roomnum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TMachine" >
+    insert into t_machine
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="machineId != null" >
+        machine_id,
+      </if>
+      <if test="organizationId != null" >
+        organization_id,
+      </if>
+      <if test="machineType != null" >
+        machine_type,
+      </if>
+      <if test="machineSn != null" >
+        machine_sn,
+      </if>
+      <if test="roomnum != null" >
+        roomNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="machineId != null" >
+        #{machineId,jdbcType=BIGINT},
+      </if>
+      <if test="organizationId != null" >
+        #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="machineType != null" >
+        #{machineType,jdbcType=INTEGER},
+      </if>
+      <if test="machineSn != null" >
+        #{machineSn,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnum != null" >
+        #{roomnum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TMachine" >
+    update t_machine
+    <set >
+      <if test="organizationId != null" >
+        organization_id = #{organizationId,jdbcType=VARCHAR},
+      </if>
+      <if test="machineType != null" >
+        machine_type = #{machineType,jdbcType=INTEGER},
+      </if>
+      <if test="machineSn != null" >
+        machine_sn = #{machineSn,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnum != null" >
+        roomNum = #{roomnum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where machine_id = #{machineId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TMachine" >
+    update t_machine
+    set organization_id = #{organizationId,jdbcType=VARCHAR},
+      machine_type = #{machineType,jdbcType=INTEGER},
+      machine_sn = #{machineSn,jdbcType=VARCHAR},
+      roomNum = #{roomnum,jdbcType=VARCHAR}
+    where machine_id = #{machineId,jdbcType=BIGINT}
+  </update>
+</mapper>

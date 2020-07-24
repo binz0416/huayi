@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TArchivesDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    <id column="archives_detail_id" property="archivesDetailId" jdbcType="BIGINT" />
+    <result column="archives_id" property="archivesId" jdbcType="VARCHAR" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="sc_id" property="scId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" extends="BaseResultMap" >
+    <result column="advise" property="advise" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    archives_detail_id, archives_id, inspection_time, type, sc_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    advise
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_archives_detail
+    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_archives_detail
+    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    insert into t_archives_detail (archives_detail_id, archives_id, inspection_time, 
+      type, sc_id, advise
+      )
+    values (#{archivesDetailId,jdbcType=BIGINT}, #{archivesId,jdbcType=VARCHAR}, #{inspectionTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=INTEGER}, #{scId,jdbcType=BIGINT}, #{advise,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    insert into t_archives_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="archivesDetailId != null" >
+        archives_detail_id,
+      </if>
+      <if test="archivesId != null" >
+        archives_id,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="scId != null" >
+        sc_id,
+      </if>
+      <if test="advise != null" >
+        advise,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="archivesDetailId != null" >
+        #{archivesDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="archivesId != null" >
+        #{archivesId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="scId != null" >
+        #{scId,jdbcType=BIGINT},
+      </if>
+      <if test="advise != null" >
+        #{advise,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    update t_archives_detail
+    <set >
+      <if test="archivesId != null" >
+        archives_id = #{archivesId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="scId != null" >
+        sc_id = #{scId,jdbcType=BIGINT},
+      </if>
+      <if test="advise != null" >
+        advise = #{advise,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    update t_archives_detail
+    set archives_id = #{archivesId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      sc_id = #{scId,jdbcType=BIGINT},
+      advise = #{advise,jdbcType=LONGVARCHAR}
+    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TArchivesDetail" >
+    update t_archives_detail
+    set archives_id = #{archivesId,jdbcType=VARCHAR},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      sc_id = #{scId,jdbcType=BIGINT}
+    where archives_detail_id = #{archivesDetailId,jdbcType=BIGINT}
+  </update>
+</mapper>

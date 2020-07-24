@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.acquisition.dao.ToxinDao">
+	
+	<select id="getToxinReport" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.toxin_id as toxinId
+			 , a.customer_id as customerId
+			 , a.inspection_time as inspectionTime
+			 , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+			 , a.path
+		     , a.report_area as reportArea
+		  FROM t_toxin a
+		 WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getToxinId" resultType="java.lang.Long" parameterType="com.wicresoft.ghealth.acquisition.dto.Toxin">
+		SELECT a.toxin_id as toxinId
+		  FROM t_toxin a
+		 WHERE a.customer_id = #{customerId, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertToxin" parameterType="com.wicresoft.ghealth.acquisition.dto.Toxin" useGeneratedKeys="true" keyProperty="toxinId">
+		INSERT INTO t_toxin
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="toxinId != null" >
+			  toxin_id,
+			</if>
+			<if test="customerId != null" >
+			  customer_id,
+			</if>
+			<if test="customerCheckin != null" >
+			  customer_checkin,
+			</if>
+			<if test="path != null" >
+			  path,
+			</if>
+			<if test="no != null" >
+			  no,
+			</if>
+			<if test="inspectionTime != null" >
+			  inspection_time,
+			</if>
+			<if test="expertOpinion != null" >
+			  expert_opinion,
+			</if>
+			<if test="reportArea != null" >
+			  report_area,
+			</if>
+			<if test="suggest != null" >
+			  suggest,
+			</if>
+			<if test="food != null" >
+			  food,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="toxinId != null" >
+			  #{toxinId,jdbcType=BIGINT},
+			</if>
+			<if test="customerId != null" >
+			  #{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="customerCheckin != null" >
+			  #{customerCheckin,jdbcType=TIMESTAMP},
+			</if>
+			<if test="path != null" >
+			  #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="no != null" >
+			  #{no,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null" >
+			  #{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="expertOpinion != null" >
+			  #{expertOpinion,jdbcType=VARCHAR},
+			</if>
+			<if test="reportArea != null" >
+			  #{reportArea,jdbcType=VARCHAR},
+			</if>
+			<if test="suggest != null" >
+			  #{suggest,jdbcType=VARCHAR},
+			</if>
+			<if test="food != null" >
+			  #{food,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateToxin" parameterType="com.wicresoft.ghealth.acquisition.dto.Toxin" >
+		UPDATE t_toxin
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCheckin != null" >
+        customer_checkin = #{customerCheckin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expertOpinion != null" >
+        expert_opinion = #{expertOpinion,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportArea != null" >
+        report_area = #{reportArea,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="suggest != null" >
+        suggest = #{suggest,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="food != null" >
+        food = #{food,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </update>
+  
+  <delete id="deleteToxinDetected" parameterType="java.lang.Long" >
+	    delete from t_toxin_detected
+	    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteToxinAbnormal" parameterType="java.lang.Long" >
+	    delete from t_toxin_abnormal
+	    where toxin_id = #{toxinId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insertDetected" parameterType="com.wicresoft.ghealth.acquisition.dto.ToxinDetected" useGeneratedKeys="true" keyProperty="detailId">
+		INSERT INTO t_toxin_detected
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="detailId != null" >
+			  toxin_detailId,
+			</if>
+			<if test="toxinId != null" >
+			  toxin_id,
+			</if>
+			<if test="method != null" >
+			  method,
+			</if>
+			<if test="sampleType != null" >
+			  sample_type,
+			</if>
+			<if test="xenobiotics_detected != null" >
+			  xenobiotics_detected,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="detailId != null" >
+			  #{detailId,jdbcType=BIGINT},
+			</if>
+			<if test="toxinId != null" >
+			  #{toxinId,jdbcType=BIGINT},
+			</if>
+			<if test="method != null" >
+			  #{method,jdbcType=VARCHAR},
+			</if>
+			<if test="sampleType != null" >
+			  #{sampleType,jdbcType=VARCHAR},
+			</if>
+			<if test="xenobiotics_detected != null" >
+			  #{xenobiotics_detected,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+	
+	<insert id="insertAbnormal" parameterType="com.wicresoft.ghealth.acquisition.dto.ToxinAbnormal" useGeneratedKeys="true" keyProperty="abnormalId">
+		INSERT INTO t_toxin_abnormal
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="abnormalId != null" >
+			  toxin_abnormalId,
+			</if>
+			<if test="toxinId != null" >
+			  toxin_id,
+			</if>
+			<if test="result != null" >
+			  result,
+			</if>
+			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="abnormalId != null" >
+			  #{abnormalId,jdbcType=BIGINT},
+			</if>
+			<if test="toxinId != null" >
+			  #{toxinId,jdbcType=BIGINT},
+			</if>
+			<if test="result != null" >
+			  #{result,jdbcType=VARCHAR},
+			</if>
+			
+			
+		</trim>
+	</insert>
+	
+</mapper>

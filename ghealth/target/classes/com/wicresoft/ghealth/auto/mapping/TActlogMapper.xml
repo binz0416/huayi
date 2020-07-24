@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TActlogMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    <id column="actlog_id" property="actlogId" jdbcType="BIGINT" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="accesstime" property="accesstime" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="stat" property="stat" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wicresoft.ghealth.auto.pojo.TActlog" extends="BaseResultMap" >
+    <result column="info" property="info" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    actlog_id, url, accesstime, username, stat
+  </sql>
+  <sql id="Blob_Column_List" >
+    info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_actlog
+    where actlog_id = #{actlogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_actlog
+    where actlog_id = #{actlogId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    insert into t_actlog (actlog_id, url, accesstime, 
+      username, stat, info
+      )
+    values (#{actlogId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{accesstime,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{stat,jdbcType=VARCHAR}, #{info,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    insert into t_actlog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actlogId != null" >
+        actlog_id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="accesstime != null" >
+        accesstime,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="stat != null" >
+        stat,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actlogId != null" >
+        #{actlogId,jdbcType=BIGINT},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="accesstime != null" >
+        #{accesstime,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="stat != null" >
+        #{stat,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    update t_actlog
+    <set >
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="accesstime != null" >
+        accesstime = #{accesstime,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="stat != null" >
+        stat = #{stat,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where actlog_id = #{actlogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    update t_actlog
+    set url = #{url,jdbcType=VARCHAR},
+      accesstime = #{accesstime,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      stat = #{stat,jdbcType=VARCHAR},
+      info = #{info,jdbcType=LONGVARCHAR}
+    where actlog_id = #{actlogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TActlog" >
+    update t_actlog
+    set url = #{url,jdbcType=VARCHAR},
+      accesstime = #{accesstime,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      stat = #{stat,jdbcType=VARCHAR}
+    where actlog_id = #{actlogId,jdbcType=BIGINT}
+  </update>
+</mapper>

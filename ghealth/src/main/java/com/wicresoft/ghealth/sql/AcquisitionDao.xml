@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.acquisition.dao.AcquisitionDao">
+
+	<resultMap id="spacecapsule_report" type="com.wicresoft.ghealth.auto.pojo.TSpacecapsule">
+		<id column="spacecapsule_report_id" property="spacecapsuleReportId"
+			jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="organization_id" property="organizationId"
+			jdbcType="VARCHAR" />
+		<result column="report_id" property="reportId" jdbcType="VARCHAR" />
+		<result column="roomNum" property="roomnum" jdbcType="VARCHAR" />
+		<result column="machine_sn" property="machineSn" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="machine" type="com.wicresoft.ghealth.auto.pojo.TMachine">
+		<id column="machine_id" property="machineId" jdbcType="BIGINT" />
+		<result column="organization_id" property="organizationId"
+			jdbcType="VARCHAR" />
+		<result column="machine_type" property="machineType" jdbcType="INTEGER" />
+		<result column="machine_sn" property="machineSn" jdbcType="VARCHAR" />
+		<result column="roomNum" property="roomnum" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="addHeart" parameterType="java.util.Map">
+		insert into t_heart (
+		uuid, customer_id, customer_checkin,
+		customer_mobile, nickName,
+		startTime,
+		endTime, sn,
+		url, respiratory,
+		beatNum,
+		maxHeart, avgHeart,
+		minHeart, braNum, tachNum,
+		apbNum, vpcNum)
+		values
+		(#{uuid,jdbcType=VARCHAR},
+		#{customerId,jdbcType=VARCHAR},
+		#{checkinTime,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{nickName,jdbcType=VARCHAR},
+		#{startTime,jdbcType=VARCHAR},
+		#{endTime,jdbcType=VARCHAR},
+		#{sn,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{respiratory,jdbcType=INTEGER},
+		#{beatNum,jdbcType=INTEGER},
+		#{maxHeart,jdbcType=INTEGER},
+		#{avgHeart,jdbcType=INTEGER},
+		#{minHeart,jdbcType=INTEGER},
+		#{braNum,jdbcType=INTEGER},
+		#{tachNum,jdbcType=INTEGER},
+		#{apbNum,jdbcType=INTEGER},
+		#{vpcNum,jdbcType=INTEGER})
+	</insert>
+
+	<select id="selectMachineByType" resultType="java.util.Map"
+		parameterType="Integer">
+		select
+		a.machine_id, a.organization_id, a.machine_type,
+		a.machine_sn, a.roomNum , b.connect_result
+		from t_machine a
+		left join
+		t_machine_log b on
+		a.machine_id = b.machine_id
+		where machine_type =
+		#{machineType,jdbcType=INTEGER}
+	</select>
+
+	<insert id="saveMachineLog" parameterType="java.util.Map">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from t_machine_log where machine_id =
+			#{machineId,jdbcType=BIGINT} and DATE_FORMAT(connect_date,'%Y-%m-%d')
+			= #{connectDate,jdbcType=VARCHAR}
+		</selectKey>
+		<if test="count > 0">
+			update t_machine_log
+			set connect_result =
+			#{connectResult,jdbcType=VARCHAR} ,
+			connect_log =
+			#{connectLog,jdbcType=VARCHAR}
+			where machine_id =
+			#{machineId,jdbcType=BIGINT} and
+			DATE_FORMAT(connect_date,'%Y-%m-%d')
+			=
+			#{connectDate,jdbcType=VARCHAR}
+		</if>
+		<if test="count==0">
+			insert into t_machine_log ( machine_id,
+			connect_date ,
+			connect_result ,
+			connect_log)
+			values(
+			#{machineId,jdbcType=BIGINT},
+			#{connectDate,jdbcType=VARCHAR},
+			#{connectResult,jdbcType=VARCHAR},
+			#{connectLog , jdbcType=VARCHAR}
+			)
+		</if>
+	</insert>
+
+	<select id="getCustomerId" resultType="java.util.Map"
+		parameterType="java.util.Map">
+		select
+		customer_id,
+		DATE_FORMAT(customer_checkin,'%Y-%m-%d') as
+		checkinTime
+		from
+		t_customer_checkin
+		where
+		organization_id =
+		#{organizationId,jdbcType=BIGINT}
+		AND hotel_roomnum
+		=#{roomNum,jdbcType=VARCHAR}
+		AND #{checkinTime,jdbcType=VARCHAR}
+		BETWEEN DATE_FORMAT(customer_checkin,'%Y-%m-%d') AND
+		DATE_FORMAT(customer_checkout,'%Y-%m-%d')
+	</select>
+
+	<select id="getReportIdByTime" resultMap="spacecapsule_report"
+		parameterType="java.util.Map">
+		select
+		spacecapsule_report_id, customer_id,
+		organization_id, report_id, roomNum, machine_sn,
+		start_time, end_time
+		from t_spacecapsule_report
+		where start_time &lt;=
+		#{makeTime,jdbcType=TIMESTAMP}
+		and end_time &gt;=
+		#{makeTime,jdbcType=TIMESTAMP}
+	</select>
+
+	<select id="getToxin" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.toxin_id as toxinId
+		     , a.customer_id as customerId
+		     , a.path
+		     , a.inspection_time as inspectionTime
+      		 , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+      		 , a.report_area as reportArea
+		  FROM t_toxin a
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+
+	<resultMap id="physicalBloodResult"
+		type="com.wicresoft.ghealth.acquisition.dto.PhysicalBloodDto">
+		<id column="blood_id" property="bloodId" jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="inspection_time" property="inspectionTime"
+			jdbcType="TIMESTAMP" />
+		<result column="inspectionTimeDsp" property="inspectionTimeDsp" />
+		<result column="clinical_diagnosis" property="clinicalDiagnosis"
+			jdbcType="VARCHAR" />
+		<result column="bl_specimen" property="blSpecimen" jdbcType="VARCHAR" />
+		<result column="bl_condition" property="blCondition" jdbcType="VARCHAR" />
+		<result column="tbil" property="tbil" jdbcType="VARCHAR" />
+		<result column="dbil" property="dbil" jdbcType="VARCHAR" />
+		<result column="ibil" property="ibil" jdbcType="VARCHAR" />
+		<result column="tg" property="tg" jdbcType="VARCHAR" />
+		<result column="chol" property="chol" jdbcType="VARCHAR" />
+		<result column="hdl_ch" property="hdlCh" jdbcType="VARCHAR" />
+		<result column="ldl_ch" property="ldlCh" jdbcType="VARCHAR" />
+		<result column="alt" property="alt" jdbcType="VARCHAR" />
+		<result column="ast" property="ast" jdbcType="VARCHAR" />
+		<result column="alt_ast" property="altAst" jdbcType="VARCHAR" />
+		<result column="alp" property="alp" jdbcType="VARCHAR" />
+		<result column="ldh" property="ldh" jdbcType="VARCHAR" />
+		<result column="tp" property="tp" jdbcType="VARCHAR" />
+		<result column="alb" property="alb" jdbcType="VARCHAR" />
+		<result column="ggt" property="ggt" jdbcType="VARCHAR" />
+		<result column="glob" property="glob" jdbcType="VARCHAR" />
+		<result column="a_g" property="aG" jdbcType="VARCHAR" />
+		<result column="tbil_method" property="tbilMethod" jdbcType="VARCHAR" />
+		<result column="dbil_method" property="dbilMethod" jdbcType="VARCHAR" />
+		<result column="ibil_method" property="ibilMethod" jdbcType="VARCHAR" />
+		<result column="tg_method" property="tgMethod" jdbcType="VARCHAR" />
+		<result column="chol_method" property="cholMethod" jdbcType="VARCHAR" />
+		<result column="hdl_ch_method" property="hdlChMethod" jdbcType="VARCHAR" />
+		<result column="ldl_ch_method" property="ldlChMethod" jdbcType="VARCHAR" />
+		<result column="alt_method" property="altMethod" jdbcType="VARCHAR" />
+		<result column="ast_method" property="astMethod" jdbcType="VARCHAR" />
+		<result column="alt_ast_method" property="altAstMethod"
+			jdbcType="VARCHAR" />
+		<result column="alp_method" property="alpMethod" jdbcType="VARCHAR" />
+		<result column="ldh_method" property="ldhMethod" jdbcType="VARCHAR" />
+		<result column="tp_method" property="tpMethod" jdbcType="VARCHAR" />
+		<result column="alb_method" property="albMethod" jdbcType="VARCHAR" />
+		<result column="ggt_method" property="ggtMethod" jdbcType="VARCHAR" />
+		<result column="glob_method" property="globMethod" jdbcType="VARCHAR" />
+		<result column="a_g_method" property="aGMethod" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getPhysicalBloodInfos" resultMap="physicalBloodResult"
+		parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_physical_blood a
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+
+	<insert id="insertPhysicalBlood"
+		parameterType="com.wicresoft.ghealth.acquisition.dto.PhysicalBloodDto">
+		insert into t_physical_blood
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bloodId != null">
+				blood_id,
+			</if>
+			<if test="customerId != null">
+				customer_id,
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time,
+			</if>
+			<if test="clinicalDiagnosis != null">
+				clinical_diagnosis,
+			</if>
+			<if test="blSpecimen != null">
+				bl_specimen,
+			</if>
+			<if test="blCondition != null">
+				bl_condition,
+			</if>
+			<if test="tbil != null">
+				tbil,
+			</if>
+			<if test="dbil != null">
+				dbil,
+			</if>
+			<if test="ibil != null">
+				ibil,
+			</if>
+			<if test="tg != null">
+				tg,
+			</if>
+			<if test="chol != null">
+				chol,
+			</if>
+			<if test="hdlCh != null">
+				hdl_ch,
+			</if>
+			<if test="ldlCh != null">
+				ldl_ch,
+			</if>
+			<if test="alt != null">
+				alt,
+			</if>
+			<if test="ast != null">
+				ast,
+			</if>
+			<if test="altAst != null">
+				alt_ast,
+			</if>
+			<if test="alp != null">
+				alp,
+			</if>
+			<if test="ldh != null">
+				ldh,
+			</if>
+			<if test="tp != null">
+				tp,
+			</if>
+			<if test="alb != null">
+				alb,
+			</if>
+			<if test="ggt != null">
+				ggt,
+			</if>
+			<if test="glob != null">
+				glob,
+			</if>
+			<if test="aG != null">
+				a_g,
+			</if>
+			<if test="tbilMethod != null">
+				tbil_method,
+			</if>
+			<if test="dbilMethod != null">
+				dbil_method,
+			</if>
+			<if test="ibilMethod != null">
+				ibil_method,
+			</if>
+			<if test="tgMethod != null">
+				tg_method,
+			</if>
+			<if test="cholMethod != null">
+				chol_method,
+			</if>
+			<if test="hdlChMethod != null">
+				hdl_ch_method,
+			</if>
+			<if test="ldlChMethod != null">
+				ldl_ch_method,
+			</if>
+			<if test="altMethod != null">
+				alt_method,
+			</if>
+			<if test="astMethod != null">
+				ast_method,
+			</if>
+			<if test="altAstMethod != null">
+				alt_ast_method,
+			</if>
+			<if test="alpMethod != null">
+				alp_method,
+			</if>
+			<if test="ldhMethod != null">
+				ldh_method,
+			</if>
+			<if test="tpMethod != null">
+				tp_method,
+			</if>
+			<if test="albMethod != null">
+				alb_method,
+			</if>
+			<if test="ggtMethod != null">
+				ggt_method,
+			</if>
+			<if test="globMethod != null">
+				glob_method,
+			</if>
+			<if test="aGMethod != null">
+				a_g_method,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bloodId != null">
+				#{bloodId,jdbcType=BIGINT},
+			</if>
+			<if test="customerId != null">
+				#{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				#{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clinicalDiagnosis != null">
+				#{clinicalDiagnosis,jdbcType=VARCHAR},
+			</if>
+			<if test="blSpecimen != null">
+				#{blSpecimen,jdbcType=VARCHAR},
+			</if>
+			<if test="blCondition != null">
+				#{blCondition,jdbcType=VARCHAR},
+			</if>
+			<if test="tbil != null">
+				#{tbil,jdbcType=VARCHAR},
+			</if>
+			<if test="dbil != null">
+				#{dbil,jdbcType=VARCHAR},
+			</if>
+			<if test="ibil != null">
+				#{ibil,jdbcType=VARCHAR},
+			</if>
+			<if test="tg != null">
+				#{tg,jdbcType=VARCHAR},
+			</if>
+			<if test="chol != null">
+				#{chol,jdbcType=VARCHAR},
+			</if>
+			<if test="hdlCh != null">
+				#{hdlCh,jdbcType=VARCHAR},
+			</if>
+			<if test="ldlCh != null">
+				#{ldlCh,jdbcType=VARCHAR},
+			</if>
+			<if test="alt != null">
+				#{alt,jdbcType=VARCHAR},
+			</if>
+			<if test="ast != null">
+				#{ast,jdbcType=VARCHAR},
+			</if>
+			<if test="altAst != null">
+				#{altAst,jdbcType=VARCHAR},
+			</if>
+			<if test="alp != null">
+				#{alp,jdbcType=VARCHAR},
+			</if>
+			<if test="ldh != null">
+				#{ldh,jdbcType=VARCHAR},
+			</if>
+			<if test="tp != null">
+				#{tp,jdbcType=VARCHAR},
+			</if>
+			<if test="alb != null">
+				#{alb,jdbcType=VARCHAR},
+			</if>
+			<if test="ggt != null">
+				#{ggt,jdbcType=VARCHAR},
+			</if>
+			<if test="glob != null">
+				#{glob,jdbcType=VARCHAR},
+			</if>
+			<if test="aG != null">
+				#{aG,jdbcType=VARCHAR},
+			</if>
+			<if test="tbilMethod != null">
+				#{tbilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="dbilMethod != null">
+				#{dbilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ibilMethod != null">
+				#{ibilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="tgMethod != null">
+				#{tgMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="cholMethod != null">
+				#{cholMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="hdlChMethod != null">
+				#{hdlChMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ldlChMethod != null">
+				#{ldlChMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="altMethod != null">
+				#{altMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="astMethod != null">
+				#{astMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="altAstMethod != null">
+				#{altAstMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="alpMethod != null">
+				#{alpMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ldhMethod != null">
+				#{ldhMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="tpMethod != null">
+				#{tpMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="albMethod != null">
+				#{albMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ggtMethod != null">
+				#{ggtMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="globMethod != null">
+				#{globMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="aGMethod != null">
+				#{aGMethod,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updatePhysicalBlood"
+		parameterType="com.wicresoft.ghealth.acquisition.dto.PhysicalBloodDto">
+		update t_physical_blood
+		<set>
+			<if test="customerId != null">
+				customer_id = #{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clinicalDiagnosis != null">
+				clinical_diagnosis =
+				#{clinicalDiagnosis,jdbcType=VARCHAR},
+			</if>
+			<if test="blSpecimen != null">
+				bl_specimen = #{blSpecimen,jdbcType=VARCHAR},
+			</if>
+			<if test="blCondition != null">
+				bl_condition = #{blCondition,jdbcType=VARCHAR},
+			</if>
+			<if test="tbil != null">
+				tbil = #{tbil,jdbcType=VARCHAR},
+			</if>
+			<if test="dbil != null">
+				dbil = #{dbil,jdbcType=VARCHAR},
+			</if>
+			<if test="ibil != null">
+				ibil = #{ibil,jdbcType=VARCHAR},
+			</if>
+			<if test="tg != null">
+				tg = #{tg,jdbcType=VARCHAR},
+			</if>
+			<if test="chol != null">
+				chol = #{chol,jdbcType=VARCHAR},
+			</if>
+			<if test="hdlCh != null">
+				hdl_ch = #{hdlCh,jdbcType=VARCHAR},
+			</if>
+			<if test="ldlCh != null">
+				ldl_ch = #{ldlCh,jdbcType=VARCHAR},
+			</if>
+			<if test="alt != null">
+				alt = #{alt,jdbcType=VARCHAR},
+			</if>
+			<if test="ast != null">
+				ast = #{ast,jdbcType=VARCHAR},
+			</if>
+			<if test="altAst != null">
+				alt_ast = #{altAst,jdbcType=VARCHAR},
+			</if>
+			<if test="alp != null">
+				alp = #{alp,jdbcType=VARCHAR},
+			</if>
+			<if test="ldh != null">
+				ldh = #{ldh,jdbcType=VARCHAR},
+			</if>
+			<if test="tp != null">
+				tp = #{tp,jdbcType=VARCHAR},
+			</if>
+			<if test="alb != null">
+				alb = #{alb,jdbcType=VARCHAR},
+			</if>
+			<if test="ggt != null">
+				ggt = #{ggt,jdbcType=VARCHAR},
+			</if>
+			<if test="glob != null">
+				glob = #{glob,jdbcType=VARCHAR},
+			</if>
+			<if test="aG != null">
+				a_g = #{aG,jdbcType=VARCHAR},
+			</if>
+			<if test="tbilMethod != null">
+				tbil_method = #{tbilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="dbilMethod != null">
+				dbil_method = #{dbilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ibilMethod != null">
+				ibil_method = #{ibilMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="tgMethod != null">
+				tg_method = #{tgMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="cholMethod != null">
+				chol_method = #{cholMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="hdlChMethod != null">
+				hdl_ch_method = #{hdlChMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ldlChMethod != null">
+				ldl_ch_method = #{ldlChMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="altMethod != null">
+				alt_method = #{altMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="astMethod != null">
+				ast_method = #{astMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="altAstMethod != null">
+				alt_ast_method = #{altAstMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="alpMethod != null">
+				alp_method = #{alpMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ldhMethod != null">
+				ldh_method = #{ldhMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="tpMethod != null">
+				tp_method = #{tpMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="albMethod != null">
+				alb_method = #{albMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="ggtMethod != null">
+				ggt_method = #{ggtMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="globMethod != null">
+				glob_method = #{globMethod,jdbcType=VARCHAR},
+			</if>
+			<if test="aGMethod != null">
+				a_g_method = #{aGMethod,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where blood_id = #{bloodId,jdbcType=BIGINT}
+	</update>
+
+	<resultMap id="ultrasoundResult"
+		type="com.wicresoft.ghealth.acquisition.dto.PhysicalUltrasoundDto">
+		<id column="ultrasound_id" property="ultrasoundId" jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="inspection_time" property="inspectionTime"
+			jdbcType="TIMESTAMP" />
+		<result column="inspectionTimeDsp" property="inspectionTimeDsp" />
+		<result column="clinical_diagnosis" property="clinicalDiagnosis"
+			jdbcType="VARCHAR" />
+		<result column="checkpoint" property="checkpoint" jdbcType="VARCHAR" />
+		<result column="ul_description" property="ulDescription"
+			jdbcType="LONGVARCHAR" />
+		<result column="ul_tip" property="ulTip" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<select id="getPhysicalUltrasoundInfos" resultMap="ultrasoundResult"
+		parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_physical_ultrasound a
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+
+	<insert id="insertPhysicalUltrasound"
+		parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs">
+		insert into t_physical_ultrasound
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ultrasoundId != null">
+				ultrasound_id,
+			</if>
+			<if test="customerId != null">
+				customer_id,
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time,
+			</if>
+			<if test="clinicalDiagnosis != null">
+				clinical_diagnosis,
+			</if>
+			<if test="checkpoint != null">
+				checkpoint,
+			</if>
+			<if test="ulDescription != null">
+				ul_description,
+			</if>
+			<if test="ulTip != null">
+				ul_tip,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ultrasoundId != null">
+				#{ultrasoundId,jdbcType=BIGINT},
+			</if>
+			<if test="customerId != null">
+				#{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				#{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clinicalDiagnosis != null">
+				#{clinicalDiagnosis,jdbcType=VARCHAR},
+			</if>
+			<if test="checkpoint != null">
+				#{checkpoint,jdbcType=VARCHAR},
+			</if>
+			<if test="ulDescription != null">
+				#{ulDescription,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="ulTip != null">
+				#{ulTip,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updatePhysicalUltrasound"
+		parameterType="com.wicresoft.ghealth.auto.pojo.TPhysicalUltrasoundWithBLOBs">
+		update t_physical_ultrasound
+		<set>
+			<if test="customerId != null">
+				customer_id = #{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clinicalDiagnosis != null">
+				clinical_diagnosis =
+				#{clinicalDiagnosis,jdbcType=VARCHAR},
+			</if>
+			<if test="checkpoint != null">
+				checkpoint = #{checkpoint,jdbcType=VARCHAR},
+			</if>
+			<if test="ulDescription != null">
+				ul_description = #{ulDescription,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="ulTip != null">
+				ul_tip = #{ulTip,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where ultrasound_id = #{ultrasoundId,jdbcType=BIGINT}
+	</update>
+
+	<resultMap id="urineResult"
+		type="com.wicresoft.ghealth.acquisition.dto.PhysicalUrineDto">
+		<id column="urine_id" property="urineId" jdbcType="BIGINT" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+		<result column="inspection_time" property="inspectionTime"
+			jdbcType="TIMESTAMP" />
+		<result column="inspectionTimeDsp" property="inspectionTimeDsp" />
+		<result column="pro" property="pro" jdbcType="VARCHAR" />
+		<result column="bld" property="bld" jdbcType="VARCHAR" />
+		<result column="nit" property="nit" jdbcType="VARCHAR" />
+		<result column="glu" property="glu" jdbcType="VARCHAR" />
+		<result column="ket" property="ket" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getPhysicalUrineInfos" resultMap="urineResult"
+		parameterType="java.util.Map">
+		SELECT a.*
+		      , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+		  FROM t_urine a
+		WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY a.inspection_time DESC LIMIT 1
+	</select>
+
+	<insert id="insertPhysicalUrine" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine">
+		insert into t_urine
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="urineId != null">
+				urine_id,
+			</if>
+			<if test="customerId != null">
+				customer_id,
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time,
+			</if>
+			<if test="pro != null">
+				pro,
+			</if>
+			<if test="bld != null">
+				bld,
+			</if>
+			<if test="nit != null">
+				nit,
+			</if>
+			<if test="glu != null">
+				glu,
+			</if>
+			<if test="ket != null">
+				ket,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="urineId != null">
+				#{urineId,jdbcType=BIGINT},
+			</if>
+			<if test="customerId != null">
+				#{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				#{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pro != null">
+				#{pro,jdbcType=VARCHAR},
+			</if>
+			<if test="bld != null">
+				#{bld,jdbcType=VARCHAR},
+			</if>
+			<if test="nit != null">
+				#{nit,jdbcType=VARCHAR},
+			</if>
+			<if test="glu != null">
+				#{glu,jdbcType=VARCHAR},
+			</if>
+			<if test="ket != null">
+				#{ket,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updatePhysicalUrine" parameterType="com.wicresoft.ghealth.auto.pojo.TUrine">
+		update t_urine
+		<set>
+			<if test="customerId != null">
+				customer_id = #{customerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inspectionTime != null">
+				inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="pro != null">
+				pro = #{pro,jdbcType=VARCHAR},
+			</if>
+			<if test="bld != null">
+				bld = #{bld,jdbcType=VARCHAR},
+			</if>
+			<if test="nit != null">
+				nit = #{nit,jdbcType=VARCHAR},
+			</if>
+			<if test="glu != null">
+				glu = #{glu,jdbcType=VARCHAR},
+			</if>
+			<if test="ket != null">
+				ket = #{ket,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where urine_id = #{urineId,jdbcType=BIGINT}
+	</update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.auto.mapper.TCateringMapper" >
+  <resultMap id="BaseResultMap" type="com.wicresoft.ghealth.auto.pojo.TCatering" >
+    <id column="catering_id" property="cateringId" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="set_meal_id" property="setMealId" jdbcType="BIGINT" />
+    <result column="customer_faceid" property="customerFaceid" jdbcType="INTEGER" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="capture_time" property="captureTime" jdbcType="TIMESTAMP" />
+    <result column="camera_no" property="cameraNo" jdbcType="VARCHAR" />
+    <result column="valid" property="valid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    catering_id, customer_id, set_meal_id, customer_faceid, customer_name, capture_time, 
+    camera_no, valid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_catering
+    where catering_id = #{cateringId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_catering
+    where catering_id = #{cateringId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wicresoft.ghealth.auto.pojo.TCatering" >
+    insert into t_catering (catering_id, customer_id, set_meal_id, 
+      customer_faceid, customer_name, capture_time, 
+      camera_no, valid)
+    values (#{cateringId,jdbcType=BIGINT}, #{customerId,jdbcType=VARCHAR}, #{setMealId,jdbcType=BIGINT}, 
+      #{customerFaceid,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{captureTime,jdbcType=TIMESTAMP}, 
+      #{cameraNo,jdbcType=VARCHAR}, #{valid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wicresoft.ghealth.auto.pojo.TCatering" >
+    insert into t_catering
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cateringId != null" >
+        catering_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="setMealId != null" >
+        set_meal_id,
+      </if>
+      <if test="customerFaceid != null" >
+        customer_faceid,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="captureTime != null" >
+        capture_time,
+      </if>
+      <if test="cameraNo != null" >
+        camera_no,
+      </if>
+      <if test="valid != null" >
+        valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cateringId != null" >
+        #{cateringId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="setMealId != null" >
+        #{setMealId,jdbcType=BIGINT},
+      </if>
+      <if test="customerFaceid != null" >
+        #{customerFaceid,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="captureTime != null" >
+        #{captureTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cameraNo != null" >
+        #{cameraNo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wicresoft.ghealth.auto.pojo.TCatering" >
+    update t_catering
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="setMealId != null" >
+        set_meal_id = #{setMealId,jdbcType=BIGINT},
+      </if>
+      <if test="customerFaceid != null" >
+        customer_faceid = #{customerFaceid,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="captureTime != null" >
+        capture_time = #{captureTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cameraNo != null" >
+        camera_no = #{cameraNo,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null" >
+        valid = #{valid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where catering_id = #{cateringId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wicresoft.ghealth.auto.pojo.TCatering" >
+    update t_catering
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      set_meal_id = #{setMealId,jdbcType=BIGINT},
+      customer_faceid = #{customerFaceid,jdbcType=INTEGER},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      capture_time = #{captureTime,jdbcType=TIMESTAMP},
+      camera_no = #{cameraNo,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=INTEGER}
+    where catering_id = #{cateringId,jdbcType=BIGINT}
+  </update>
+</mapper>

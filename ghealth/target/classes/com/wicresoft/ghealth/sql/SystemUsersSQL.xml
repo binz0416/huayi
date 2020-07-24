@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.sys.dao.SystemUsersDao">
+	<select id="getPermission" resultType="java.lang.Integer" parameterType="java.util.Map"> 
+		SELECT count(1) 
+		   FROM t_role_menu trm
+		  INNER JOIN t_menuitem tm
+		     ON trm.menu_id = tm.menu_id
+		    AND tm.url = #{url,jdbcType=VARCHAR}
+		  WHERE trm.permission_action like '%${paction}%'
+		    AND trm.deleted = '0'
+		    AND trm.role_id in
+		     	<foreach collection="roleids" index="index" item="item" open="(" separator="," close=")">
+	   			 #{item}  
+	  		    </foreach>
+	</select>
+	
+	<select id="selectRoleMenuByGroupId" resultType="java.util.Map" parameterType="java.util.ArrayList">
+		SELECT DISTINCT a.menu_id AS menuid
+		     , a.permission_action AS paction
+		     , IFNULL(m.name,'') AS name
+		     , IFNULL(m.icon,'') AS icon
+		     , IFNULL(m.url,'') AS url
+		     , IFNULL(m.parentid,'') AS parentid
+		  FROM t_role_menu a
+		 INNER JOIN t_menuitem m
+		    ON a.menu_id = m.menu_id
+		 WHERE a.deleted = '0'
+		   AND a.role_id in 
+		   	   <foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+      			#{item}  
+     		   </foreach>
+		 ORDER BY a.menu_id
+	</select>
+	
+	<select id="getUsers" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT tu.userid as userid
+		     , tu.organization_id as organizationId
+			 , tu.username as username
+			 , IFNULL(tu.fullname,'') as fullname
+			 , tu.password as password
+			 , '0' as pwdChanged
+		     , role.groupid as groupid
+			 , role.role_shortname as groupshortname
+			 , IFNULL(tu.sex,'') as sex
+			 , IFNULL(CASE WHEN tu.sex = '0' THEN '男' ELSE '女' END,'') AS sexname
+			 , IFNULL(tu.email,'') as email
+			 , IFNULL(tu.tel,'') as tel
+			 , IFNULL(tu.position,'') as position
+		  FROM t_userinfo tu
+		  LEFT JOIN (
+						SELECT tur.user_id
+						     , GROUP_CONCAT(CAST(tur.role_id AS CHAR) separator ',') as groupid
+							 , GROUP_CONCAT(tr.role_shortname separator ',') as role_shortname
+						  FROM t_user_role tur
+						 INNER JOIN t_role tr
+						    ON tur.role_id = tr.role_id
+						 GROUP BY tur.user_id
+				    ) role
+		    ON tu.userid = role.user_id
+         WHERE 1 = 1
+         <if test="fullname != null" >
+           AND tu.fullname like '%${fullname}%'
+         </if>
+         ORDER BY tu.userid
+         <if test="page != null and pageSize != null">
+		 LIMIT #{page},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="getUsersCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT count(1)
+		  FROM t_userinfo
+         WHERE 1 = 1		 
+         <if test="fullname != null" >
+           AND fullname like '%${fullname}%'
+         </if>
+         <if test="username != null" >
+           AND username = #{username,jdbcType=VARCHAR}
+         </if>
+	</select>
+	
+	<select id="checkHasUser" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT count(1)
+		  FROM t_userinfo
+         WHERE username = #{username,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<insert id="insertUser" parameterType="com.wicresoft.ghealth.sys.dto.UserRecord" useGeneratedKeys="true" keyProperty="userid">
+    	INSERT INTO t_userinfo
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="userid != null" >
+			  userid,
+			</if>
+			<if test="organizationId != null" >
+			  organization_id,
+			</if>
+			<if test="username != null" >
+			  username,
+			</if>
+			<if test="password != null" >
+			  password,
+			</if>
+			<if test="fullname != null" >
+			  fullname,
+			</if>
+			<if test="sex != null" >
+			  sex,
+			</if>
+			<if test="email != null" >
+			  email,
+			</if>
+			<if test="tel != null" >
+			  tel,
+			</if>
+			<if test="position != null" >
+			  position,
+			</if>
+			<if test="createtime != null" >
+			  create_date_time,
+			</if>
+			<if test="updateuser != null" >
+			  updateuser,
+			</if>
+			<if test="updatetime != null" >
+			  update_date_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="userid != null" >
+			  #{userid,jdbcType=BIGINT},
+			</if>
+			<if test="organizationId != null" >
+			  #{organizationId,jdbcType=BIGINT},
+			</if>
+			<if test="username != null" >
+			  #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null" >
+			  #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="fullname != null" >
+			  #{fullname,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null" >
+			  #{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null" >
+			  #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null" >
+			  #{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null" >
+			  #{position,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null" >
+			  #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateuser != null" >
+			  #{updateuser,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null" >
+			  #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="checkHasUserForUpd" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT count(1)
+		  FROM t_userinfo
+         WHERE userid = #{userid}
+	</select>
+	
+	<update id="updateUser" parameterType="com.wicresoft.ghealth.sys.dto.UserRecord" >
+	    UPDATE t_userinfo
+	    <set >
+	      <if test="organizationId != null" >
+	        organization_id = #{organizationId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="username != null" >
+	        username = #{username,jdbcType=VARCHAR},
+	      </if>
+	      <if test="password != null" >
+	        password = #{password,jdbcType=VARCHAR},
+	      </if>
+	      <if test="fullname != null" >
+	        fullname = #{fullname,jdbcType=VARCHAR},
+	      </if>
+	      <if test="sex != null" >
+	        sex = #{sex,jdbcType=VARCHAR},
+	      </if>
+	      <if test="email != null" >
+	        email = #{email,jdbcType=VARCHAR},
+	      </if>
+	      <if test="tel != null" >
+	        tel = #{tel,jdbcType=VARCHAR},
+	      </if>
+	      <if test="position != null" >
+	        position = #{position,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createtime != null" >
+	        create_date_time = #{createtime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateuser != null" >
+	        updateuser = #{updateuser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updatetime != null" >
+	        update_date_time = #{updatetime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    WHERE userid = #{userid,jdbcType=BIGINT}
+  	</update>
+  	
+  	<delete id="deleUserRoles" parameterType="java.lang.String" >
+    	DELETE FROM t_user_role
+    	 WHERE user_id = #{userid,jdbcType=VARCHAR}
+  	</delete>
+	
+</mapper>

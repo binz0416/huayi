@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>光华云健康服务平台</title>
+<link rel="stylesheet" type="text/css"
+	href="js/easyUI/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/easyUI/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="js/easyUI/demo/demo.css">
+<link rel="stylesheet" type="text/css" href="css/common/comm.css">
+<script src="js/require.js" defer async="true"></script>
+<script src="js/require.js" data-main="js/rscommon"></script>
+</head>
+
+<body style="padding: 2px;">
+	<div id="cc" class="easyui-layout layout panel-noscroll"
+		style="width: 100%; height: 800px;">
+		<div id="main_header" class="hide_div"
+			data-options="region:'north',border:false" style="height: 90px;">
+			<div id="toplogo" class="top_logo">
+				<div class="logo"></div>
+				<div class="top_title"></div>
+				<div id="logout" class="top_signout"></div>
+			</div>
+		</div>
+
+		<div data-options="region:'west',split:true,title:'菜单导航'"
+			style="width: 150px;">
+			<div id="menuEare" class="easyui-accordion"
+				style="text-align: center;"></div>
+		</div>
+		<div id="urlTitle" data-options="region:'center'"
+			style="padding: 5px; background: #eee;">
+			<div id="ttTab" class="easyui-tabs" data-options="tools:'#tab-tools'"
+				fit="true">
+				<div id="homediv" title="首页" data-options="closeable:true"
+					style="padding: 20px; width: 100%;">
+					<div class="easyui-panel panel-body panel-body-noheader mapClass">
+						<!--功能地图开始-->
+						<div class="main" id="gongnengdiv">
+							<h2>功能地图</h2>
+							<div class="content" style="display: none;">
+								<ul id="contentUl">
+								</ul>
+								<ul>
+									<li id="colTwo" class="col1">
+										<div class="content-box">
+											<div class="content-l">
+												<div class="icon"></div>
+												<p></p>
+											</div>
+											<div class="content-r"></div>
+										</div>
+									</li>
+									<li id="colThree" class="col2">
+										<div class="content-box">
+											<div class="content-l2">
+												<div class="icon"></div>
+												<p></p>
+											</div>
+											<div class="content-r"></div>
+											<div class="content-r"></div>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="content" id="divMain"></div>
+						</div>
+						<!--功能地图结束-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main_footer" class="hide_div"
+			data-options="region:'south',border:false"
+			style="text-align: center;">光华云健康服务平台</div>
+	</div>
+	<script type="text/javascript">
+		require([ 'js/menu/menu.js' ]);
+
+		function closeAll() {
+			require([ 'js/menu/menu.js' ], function(menu) {
+				menu.closeAll();
+			});
+		}
+	</script>
+</body>
+
+</html>

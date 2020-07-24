@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wicresoft.ghealth.acquisition.dao.ComprehensiveDao">
+	
+	<select id="getComprehensiveReport" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT a.comprehensive_id as comprehensiveId
+			 , a.customer_id as customerId
+			 , a.inspection_time as inspectionTime
+			 , DATE_FORMAT(a.inspection_time,'%Y-%m-%d') as inspectionTimeDsp
+			 , a.path
+		     , a.report_area as reportArea
+		  FROM t_comprehensive a
+		 WHERE a.customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertComprehensive" parameterType="com.wicresoft.ghealth.acquisition.dto.Comprehensive" useGeneratedKeys="true" keyProperty="comprehensiveId">
+	    insert into t_comprehensive
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="comprehensiveId != null" >
+	        comprehensive_id,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="inspectionTime != null" >
+	        inspection_time,
+	      </if>
+	      <if test="path != null" >
+	        path,
+	      </if>
+	      <if test="reportArea != null" >
+	        report_area,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="comprehensiveId != null" >
+	        #{comprehensiveId,jdbcType=BIGINT},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="inspectionTime != null" >
+	        #{inspectionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="path != null" >
+	        #{path,jdbcType=VARCHAR},
+	      </if>
+	      <if test="reportArea != null" >
+	        #{reportArea,jdbcType=LONGVARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateComprehensive" parameterType="com.wicresoft.ghealth.acquisition.dto.Comprehensive" >
+	    update t_comprehensive
+	    <set >
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="inspectionTime != null" >
+	        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="path != null" >
+	        path = #{path,jdbcType=VARCHAR},
+	      </if>
+	      <if test="reportArea != null" >
+	        report_area = #{reportArea,jdbcType=LONGVARCHAR},
+	      </if>
+	    </set>
+	    where comprehensive_id = #{comprehensiveId,jdbcType=BIGINT}
+	</update>
+	
+</mapper>
